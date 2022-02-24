@@ -1,5 +1,6 @@
 NAME = minishell
 SRC_FILES = source/main.c source/parse.c source/cmd.c
+#SRC_FILES = testbed/main.c
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_FILES = minishell.h
 INCLUDE_DIRS = libft .

@@ -5,46 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 16:51:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/02/12 16:26:49 by soumanso         ###   ########lyon.fr   */
+/*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
+/*   Updated: 2022/02/24 16:58:06 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <errno.h>
-# include <string.h>
-# include <limits.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include "libft.h"
 
-# define PROMPT_CHAR '$'
+typedef struct s_env
+{
+	t_str	name;
+	t_str	val;
+}	t_env;
 
 typedef struct s_cmd
 {
-	t_str	name_or_path;
+	t_str	in_filename;
+	t_str	out_filename;
+	t_bool	out_append;	/* >> */
+	t_str	name;
 	t_str	*args;
-	t_s64	arg_count;
 }	t_cmd;
 
 typedef struct s_cmd_line
 {
-	t_str	str;
 	t_cmd	*cmds;
-	t_s64	cmd_count;
+	t_int	cmd_count;
 }	t_cmd_line;
 
-void	free_cmd(t_cmd *cmd);
-void	free_cmd_line(t_cmd_line *line);
+typedef struct s_shell
+{
+	t_env	*env;
+	
+}	t_shell;
 
-t_bool	parse_cmd_line(t_cmd_line *line);
-void	execute_cmd_line(t_cmd_line *line);
+/* Environment */
 
-t_str	get_working_dir(void);
+t_bool	env_parse(t_str str, t_env *out);
+t_str	env_get(t_shell *sh, t_str name);
+void	env_set(t_shell *sh, t_str name, t_str val);
+void	env_remove(t_shell *sh, t_str name);
+
+/* Command line parsing */
+
+
+
+/* Execution */
+
+/* Returns the exit code of the last command */
+t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
 
 #endif
