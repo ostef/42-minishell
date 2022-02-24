@@ -1,22 +1,23 @@
 NAME = minishell
-SRC_FILES = source/main.c source/parse.c source/cmd.c
-#SRC_FILES = testbed/main.c
+SRC_DIR = source
+SRC_FILES = main.c
+OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
-INCLUDE_FILES = minishell.h
 INCLUDE_DIRS = libft .
-DEPENDENCIES = libft/libft.a
+DEPENDENCIES = minishell.h libft/libft.a Makefile
 LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
-C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) #-Wall -Wextra -Werror
+C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror
 
 all: | libft $(NAME)
 
-$(OBJ_FILES): %.o: %.c $(INCLUDE_FILES) $(DEPENDENCIES) Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
+	@mkdir -p $(dir $@)
 	$(CC) $(C_FLAGS) -c $< -o $@
 
-$(NAME): $(OBJ_FILES)
-	$(CC) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) -framework OpenGL -framework AppKit $(OBJ_FILES) -o $(NAME)
+$(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
+	$(CC) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(addprefix $(OBJ_DIR)/, $(OBJ_FILES)) -o $(NAME)
 
 libft:
 	@make -C libft
