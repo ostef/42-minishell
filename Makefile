@@ -1,6 +1,6 @@
 NAME = minishell
 SRC_DIR = source
-SRC_FILES = main.c
+SRC_FILES = main_cmd.c exec/exec.c
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_DIRS = libft .

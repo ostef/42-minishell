@@ -1,0 +1,7 @@
+Ana:
+* Env parsing
+* env_get, env_set, env_remove
+
+Stefan:
+* Cmd execution, pipes
+* Make error codes when execve fails match bash
