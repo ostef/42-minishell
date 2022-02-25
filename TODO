@@ -5,3 +5,4 @@ Ana:
 Stefan:
 * Cmd execution, pipes
 * Make error codes when execve fails match bash
+* Make sure we close files correctly
