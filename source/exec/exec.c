@@ -6,72 +6,21 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/02/25 16:02:54 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/02/28 16:07:07 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_str	cmd_get_argv_buff(t_cmd *cmd)
-{
-	t_str	buff;
-	t_s64	buff_len;
-	t_s64	i;
-	t_s64	offset;
-
-	buff_len = ft_strlen (cmd->name) + 1;
-	i = 0;
-	while (cmd->args && cmd->args[i])
-	{
-		buff_len += ft_strlen (cmd->name) + 1;
-		i += 1;
-	}
-	buff = (t_str)ft_alloc (buff_len, ft_temp ());
-	if (!buff)
-		return (NULL);
-	ft_memcpy (buff, cmd->name, ft_strlen (cmd->name) + 1);
-	i = 0;
-	offset = ft_strlen (cmd->name) + 1;
-	while (cmd->args && cmd->args[i])
-	{
-		ft_memcpy (buff + offset, cmd->args[i], ft_strlen (cmd->args[i]) + 1);
-		offset += ft_strlen (cmd->args[i]) + 1;
-		i += 1;
-	}
-	return (buff);
-}
-
-static t_str	*cmd_get_argv(t_cmd *cmd)
-{
-	t_str	buff;
-	t_str	*result;
-	t_s64	i;
-
-	buff = cmd_get_argv_buff (cmd);
-	if (!buff)
-		return (NULL);
-	result = (t_str *)ft_alloc (sizeof (t_str) * (cmd->arg_count + 2), ft_temp ());
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < cmd->arg_count + 1)
-	{
-		result[i] = buff;
-		buff += ft_strlen (buff) + 1;
-		i += 1;
-	}
-	result[i] = NULL;
-	return (result);
-}
-
-void	cmd_close_all_pipes(t_cmd *cmd)
+static void	cmd_close_all_pipes(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		if (cmd->pipe[PIPE_READ] > STDERR)
+		if (cmd->next)
+		{
 			close (cmd->pipe[PIPE_READ]);
-		if (cmd->pipe[PIPE_WRITE] > STDERR)
 			close (cmd->pipe[PIPE_WRITE]);
+		}
 		cmd = cmd->prev;
 	}
 }
