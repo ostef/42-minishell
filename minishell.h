@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 16:19:17 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/02 17:02:06 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ typedef struct s_shell
 	t_env	*env;
 	t_int	last_exit_code;
 }	t_shell;
+
+/* Error */
+
+void	eprint(t_cstr fmt_str, ...);
 
 /* Environment variables */
 

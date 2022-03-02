@@ -1,6 +1,6 @@
 NAME = minishell
 SRC_DIR = source
-SRC_FILES = main.c\
+SRC_FILES = main.c error.c\
 	cmd_parse/parse.c\
 	exec/exec.c exec/argv.c
 OBJ_DIR = obj

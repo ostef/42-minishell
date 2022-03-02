@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 16:21:54 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/02 17:02:58 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ t_cmd	*cmd_add(t_cmd_line *line)
 	return (new);
 }
 
-static void	cmd_parse(t_lexer *lexer, t_cmd *out)
+static t_bool	cmd_parse(t_lexer *lexer, t_cmd *out)
 {
 	t_token	*tk;
+	t_int	i;
 
 	(void)out;
+	i = 0;
 	while (lexer->curr < lexer->end)
 	{
 		ft_lexer_skip_spaces (lexer);
@@ -50,10 +52,11 @@ static void	cmd_parse(t_lexer *lexer, t_cmd *out)
 		if (!tk)
 			break ;
 		if (tk->len > 0)
-			ft_println ("%.*s", tk->len, tk->str);
+			i += 1;
 		if (tk->kind == TK_DELIMITED && tk->delim == '|')
 			break ;
 	}
+	return (i != 0);
 }
 
 t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
@@ -66,11 +69,14 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
 	i = 0;
 	while (lexer.curr < lexer.end)
 	{
-		ft_println ("cmd [%i]:", i);
 		cmd = cmd_add (line);
 		if (!cmd)
 			return (FALSE);
-		cmd_parse (&lexer, cmd);
+		if (!cmd_parse (&lexer, cmd))
+		{
+			eprint ("syntax error near unexpected token `%c'", *lexer.curr);
+			return (FALSE);
+		}
 		ft_lexer_skip_char (&lexer, '|');
 		i += 1;
 	}
