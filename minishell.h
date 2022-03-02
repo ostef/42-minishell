@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/01 15:58:23 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/02 16:19:17 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_cmd
 	t_str			out_filename;
 	t_bool			out_append;	/* >> */
 	t_str			name;
-	t_str			*args;	/* Null terminated */
+	t_str			*args;	/* Null terminated, includes name */
 	t_s64			arg_count;
 	/* Execution info, this gets used and set when calling cmd_exec */
 	pid_t			pid;
@@ -88,9 +88,8 @@ t_bool	env_remove(t_shell *sh, t_cstr name);
 
 /* Command line parsing */
 
-void	cmd_parse(t_cstr str, t_cmd *out);
-t_bool	cmd_line_parse(t_cstr str, t_cmd_line *out);
 t_cmd	*cmd_add(t_cmd_line *line);
+t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
