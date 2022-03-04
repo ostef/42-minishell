@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 17:02:58 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 18:32:38 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,81 @@ t_cmd	*cmd_add(t_cmd_line *line)
 	return (new);
 }
 
+static t_bool	cmd_null_terminate_args(t_cmd *cmd)
+{
+	if (cmd->args_count == cmd->args_cap)
+	{
+		cmd->args = ft_realloc (cmd->args, cmd->args_cap * sizeof (t_str),
+			(cmd->args_cap + cmd->args_cap + 8) * sizeof (t_str), ft_temp ());
+		if (!cmd->args)
+			return (FALSE);
+		cmd->args_cap += cmd->args_cap + 8;
+	}
+	cmd->args[cmd->args_count] = NULL;
+	return (TRUE);
+}
+
+static t_bool	cmd_add_arg(t_cmd *cmd, t_cstr arg, t_s64 arg_len)
+{
+	t_str	marker;
+
+	if (cmd->flat_args_count + arg_len + 1 > cmd->flat_args_cap)
+	{
+		cmd->flat_args = ft_realloc (cmd->flat_args, cmd->flat_args_cap,
+			cmd->flat_args_cap + cmd->flat_args_cap + 8, ft_temp ());
+		cmd->flat_args_cap += cmd->flat_args_cap + 8;
+	}
+	if (cmd->args_count == cmd->args_cap)
+	{
+		cmd->args = ft_realloc (cmd->args, cmd->args_cap * sizeof (t_str),
+			(cmd->args_cap + cmd->args_cap + 8) * sizeof (t_str), ft_temp ());
+		cmd->args_cap += cmd->args_cap + 8;
+	}
+	if (!cmd->flat_args || !cmd->args)
+		return (FALSE);
+	marker = cmd->flat_args + cmd->flat_args_count;
+	ft_memcpy (marker, arg, arg_len);
+	marker[arg_len] = 0;
+	printf ("marker: '%s'\n", marker);
+	printf ("len: %i\n", (t_int)arg_len);
+	cmd->flat_args_count += arg_len + 1;
+	printf ("marker: '%s'\n", marker);
+	cmd->args[cmd->args_count] = marker;
+	printf ("marker: '%s'\n", marker);
+	//ft_println ("args[args_count] = '%s'", cmd->args[cmd->args_count]);
+	cmd->args_count += 1;
+	return (TRUE);
+}
+
 static t_bool	cmd_parse(t_lexer *lexer, t_cmd *out)
 {
-	t_token	*tk;
-	t_int	i;
+	t_token	*token;
 
-	(void)out;
-	i = 0;
 	while (lexer->curr < lexer->end)
 	{
 		ft_lexer_skip_spaces (lexer);
-		tk = ft_lexer_skip_quoted_str (lexer);
-		if (!tk)
-			tk = ft_lexer_skip_delim (lexer, "\v\t\n\r |");
-		if (!tk)
+		token = ft_lexer_skip_quoted_str (lexer);
+		if (!token)
+			token = ft_lexer_skip_delim (lexer, "\v\t\n\r |");
+		if (!token)
 			break ;
-		if (tk->len > 0)
-			i += 1;
-		if (tk->kind == TK_DELIMITED && tk->delim == '|')
+		if (token->len > 0)
+			cmd_add_arg (out, token->str, token->len);
+		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
 	}
-	return (i != 0);
+	if (out->args_count == 0)
+		return (FALSE);
+	return (cmd_null_terminate_args (out));
 }
 
 t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
 {
 	t_lexer	lexer;
 	t_cmd	*cmd;
-	t_int	i;
 
 	ft_lexer_init (&lexer, str, ft_temp ());
-	i = 0;
+	line->count = 0;
 	while (lexer.curr < lexer.end)
 	{
 		cmd = cmd_add (line);
@@ -78,7 +122,7 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
 			return (FALSE);
 		}
 		ft_lexer_skip_char (&lexer, '|');
-		i += 1;
+		line->count += 1;
 	}
 	return (TRUE);
 }

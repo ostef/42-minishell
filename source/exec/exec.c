@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/02/28 16:07:07 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 17:33:37 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	cmd_close_all_pipes(t_cmd *cmd)
 
 void	cmd_exec(t_shell *sh, t_cmd *cmd)
 {
+	ft_println ("Executing '%s'.", cmd->args[0]);
 	if (cmd->next)
 		pipe (cmd->pipe);
 	cmd->pid = fork ();
@@ -37,7 +38,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		if (cmd->prev)
 			dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 		cmd_close_all_pipes (cmd);
-		if (execve (cmd->name, cmd_get_argv (cmd), sh->env_original) == -1)
+		if (execve (cmd->args[0], cmd->args, sh->env_original) == -1)
 			exit (1);
 	}
 }

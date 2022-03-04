@@ -3,6 +3,7 @@ Ana:
 * env_parse, env_get, env_set, env_remove
 * Variable expansion ($ sign)
 * Redirections
+* History
 
 Stefan:
 * Cmd execution, pipes

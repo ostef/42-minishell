@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 17:02:06 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/04 17:28:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,44 @@ typedef struct s_env
 # define PIPE_READ 0
 # define PIPE_WRITE 1
 
+/*
+ * in_filename, out_filename: Input and output redirection filenames, set to
+ * NULL if there is no redirection
+ *
+ * out_append: This is set to TRUE if the output redirection is of type >>
+ *
+ * flat_args: All the command arguments in a flat array, separated by \0s.
+ * This includes the name of the command.
+ * 
+ * flat_args_cap: The size of the `flat_args` buffer in chars
+ *
+ * args: All the command arguments as an array of strings, indexing in
+ * `flat_args`. This includes the name of the command and is null-terminated
+ * 
+ * args_cap: The size of the `args` buffer in t_strs
+ *
+ * arg_count: The number of entries in `args`
+ *
+ * pid: The PID of the command when it gets executed.
+ *
+ * pipe: An array of 2 file descriptors containing the files for inter-process
+ * communication.
+ * The pipe is used for communication between commands N and N + 1,
+ * pipe[PIPE_READ] is the fd to read from, pipe[PIPE_WRITE] is the fd to
+ * write to. If there is no pipe, then both are set to 0.
+ */
+
 typedef struct s_cmd
 {
 	t_str			in_filename;
 	t_str			out_filename;
-	t_bool			out_append;	/* >> */
-	t_str			name;
-	t_str			*args;	/* Null terminated, includes name */
-	t_s64			arg_count;
-	/* Execution info, this gets used and set when calling cmd_exec */
+	t_bool			out_append;
+	t_str			flat_args;
+	t_s64			flat_args_count;
+	t_s64			flat_args_cap;
+	t_str			*args;
+	t_s64			args_cap;
+	t_s64			args_count;
 	pid_t			pid;
 	t_file			pipe[2];
 	struct s_cmd	*prev;
@@ -97,7 +126,6 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
-t_str	*cmd_get_argv (t_cmd *cmd);
 void	cmd_exec(t_shell *sh, t_cmd *cmd);
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
