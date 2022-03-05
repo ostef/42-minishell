@@ -10,16 +10,16 @@ DEPENDENCIES = minishell.h libft/libft.a Makefile
 LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
-C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror -g
+C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror -fsanitize=address -g
 
 all: | libft $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
 	@mkdir -p $(dir $@)
-	$(CC) $(C_FLAGS) -fsanitize=address -c $< -o $@
+	$(CC) $(C_FLAGS) -c $< -o $@
 
 $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
-	$(CC) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(addprefix $(OBJ_DIR)/, $(OBJ_FILES)) -fsanitize=address -o $(NAME)
+	$(CC) $(C_FLAGS) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))  -o $(NAME)
 
 libft:
 	@make -C libft

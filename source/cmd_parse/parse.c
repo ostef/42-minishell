@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/04 18:32:38 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/05 12:47:22 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_bool	cmd_add_arg(t_cmd *cmd, t_cstr arg, t_s64 arg_len)
 	if (cmd->flat_args_count + arg_len + 1 > cmd->flat_args_cap)
 	{
 		cmd->flat_args = ft_realloc (cmd->flat_args, cmd->flat_args_cap,
-			cmd->flat_args_cap + cmd->flat_args_cap + 8, ft_temp ());
+			cmd->flat_args_cap + cmd->flat_args_cap + arg_len + 1, ft_temp ());
 		cmd->flat_args_cap += cmd->flat_args_cap + 8;
 	}
 	if (cmd->args_count == cmd->args_cap)
@@ -71,13 +71,8 @@ static t_bool	cmd_add_arg(t_cmd *cmd, t_cstr arg, t_s64 arg_len)
 	marker = cmd->flat_args + cmd->flat_args_count;
 	ft_memcpy (marker, arg, arg_len);
 	marker[arg_len] = 0;
-	printf ("marker: '%s'\n", marker);
-	printf ("len: %i\n", (t_int)arg_len);
 	cmd->flat_args_count += arg_len + 1;
-	printf ("marker: '%s'\n", marker);
 	cmd->args[cmd->args_count] = marker;
-	printf ("marker: '%s'\n", marker);
-	//ft_println ("args[args_count] = '%s'", cmd->args[cmd->args_count]);
 	cmd->args_count += 1;
 	return (TRUE);
 }
