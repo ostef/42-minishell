@@ -13,6 +13,7 @@ Stefan:
 * Handle file not found errors
 * Handle "$cmd_ok | cmd_ok | cmd_not_ok | cmd_ok" type situation
 
+* PATH search
 * Shell arguments
 * Builtins
-* 
+* Signals

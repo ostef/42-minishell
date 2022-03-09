@@ -3,16 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/04 17:45:30 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 17:37:15 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
-t_int	main(t_int ac, t_str *av)
+static void	parse_envp(t_shell *sh, t_str *envp)
+{
+	t_env	env;
+	t_int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		ft_memset (&env, 0, sizeof (t_env));
+		if (env_parse(envp[i], &env))
+			env_set(&sh, env.name, env.val);
+		i++;
+	}
+}
+
+t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;
 	t_str		line;
@@ -22,12 +37,13 @@ t_int	main(t_int ac, t_str *av)
 	(void)av;
 	ft_init_temp_storage ();
 	ft_memset (&sh, 0, sizeof (t_shell));
+	sh.env_original = envp;
+	parse_envp (&sh, envp);
 	while (TRUE)
 	{
 		ft_reset_temp_storage ();
 		line = readline("$");
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
-		ft_println ("'%s'", line);
 		if (cmd_line_parse (line, &cmd_line))
 		{
 			sh.last_exit_code = cmd_line_exec (&sh, &cmd_line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/04 17:28:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 17:24:34 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ typedef struct s_cmd_line
 typedef struct s_shell
 {
 	t_str	*env_original;	/* @Cleanup: remove this when we have env parsing and stuff */
-	t_env	*env;
+	t_env	*env_first;
+	t_env	*env_last;
 	t_int	last_exit_code;
 }	t_shell;
 
@@ -95,13 +96,13 @@ void	eprint(t_cstr fmt_str, ...);
 
 /*
  * Parse one environment variable line, in the form A=B
- * Puts the result in `out`
+ * Puts the result in `env`
  * Returns TRUE on success, FALSE on failure (the name of the variable is invalid)
  * 
  * Valid variable names consist of letters, underscores and digits, and do not
  * begin with a digit.
  */
-t_bool	env_parse(t_cstr str, t_env *out);
+t_bool	env_parse(t_cstr str, t_env *env);
 /*
  * Retrieve the environment variable named `name` inside the sh->env list.
  * Returns the value of the variable, or NULL if it does not exist.

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/05 12:47:22 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 17:31:04 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
 	t_lexer	lexer;
 	t_cmd	*cmd;
 
-	ft_lexer_init (&lexer, str, ft_temp ());
+	ft_lexer_init (&lexer, str, ft_temp());
 	line->count = 0;
 	while (lexer.curr < lexer.end)
 	{

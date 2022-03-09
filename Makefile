@@ -1,8 +1,6 @@
 NAME = minishell
 SRC_DIR = source
-SRC_FILES = main.c error.c\
-	cmd_parse/parse.c\
-	exec/exec.c exec/argv.c
+SRC_FILES = main.c error.c env_parse.c cmd_parse.c exec.c
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_DIRS = libft .
@@ -10,7 +8,7 @@ DEPENDENCIES = minishell.h libft/libft.a Makefile
 LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
-C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror -fsanitize=address -g
+C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) #-Wall -Wextra -Werror -fsanitize=address -g
 
 all: | libft $(NAME)
 
