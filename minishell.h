@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/09 17:24:34 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/09 18:22:02 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void	eprint(t_cstr fmt_str, ...);
  * begin with a digit.
  */
 t_bool	env_parse(t_cstr str, t_env *env);
+
+t_env	*env_get_node(t_shell *sh, t_cstr name);
 /*
  * Retrieve the environment variable named `name` inside the sh->env list.
  * Returns the value of the variable, or NULL if it does not exist.

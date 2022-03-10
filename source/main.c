@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/09 17:37:15 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 14:44:00 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ static void	parse_envp(t_shell *sh, t_str *envp)
 {
 	t_env	env;
 	t_int	i;
+	
 
 	i = 0;
 	while (envp[i])
 	{
 		ft_memset (&env, 0, sizeof (t_env));
+		ft_println ("envp[%i]: '%s'", i, envp[i]);
 		if (env_parse(envp[i], &env))
-			env_set(&sh, env.name, env.val);
+			env_set(sh, env.name, env.val);
 		i++;
 	}
 }
