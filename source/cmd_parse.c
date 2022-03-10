@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/09 17:31:04 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 17:24:25 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
