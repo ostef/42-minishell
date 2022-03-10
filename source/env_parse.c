@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/10 17:16:14 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 17:41:07 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_env	*env_get_node(t_shell *sh, t_cstr name)
 	return (NULL);
 }
 
-t_bool	env_remove(t_shell *sh, t_cstr name)
+void	env_remove(t_shell *sh, t_cstr name)
 {
 	t_env	*to_del;
 	t_env	*prev;

@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/09 18:22:02 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 17:40:58 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  * Removes the environment variable named `name` from the sh->env list.
  * Returns TRUE if the variable was in the list, FALSE otherwise.
  */
-t_bool	env_remove(t_shell *sh, t_cstr name);
+void	env_remove(t_shell *sh, t_cstr name);
+
+
 
 /* Command line parsing */
 
