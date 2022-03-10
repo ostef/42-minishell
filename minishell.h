@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/09 18:22:02 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 17:34:07 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_shell
 	t_str	*env_original;	/* @Cleanup: remove this when we have env parsing and stuff */
 	t_env	*env_first;
 	t_env	*env_last;
+	t_int	env_count;
 	t_int	last_exit_code;
 }	t_shell;
 

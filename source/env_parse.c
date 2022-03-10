@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/10 17:16:14 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/10 17:35:57 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 	else
 		sh->env_first = env_new;
 	sh->env_last = env_new;
+	sh->env_count += 1;
 	return (FALSE);
 }
 
@@ -78,10 +79,8 @@ t_env	*env_get_node(t_shell *sh, t_cstr name)
 	t_env *temp;
 
 	temp = sh->env_first;
-	//ft_assert (name != NULL, "name is NULL!");
 	while (temp)
 	{
-		//ft_assert (temp->name != NULL, "temp->name is NULL!");
 		if (ft_strequ(temp->name, name))
 			return (temp);
 		temp = temp->next;
@@ -96,9 +95,13 @@ t_bool	env_remove(t_shell *sh, t_cstr name)
 	t_env	*next;
 
 	to_del = env_get_node(sh, name);
+	if (!to_del)
+		return (FALSE);
 	prev = to_del->prev;
 	next = to_del->next;
 	prev->next = next;
 	next->prev = prev;
-	free(to_del);
+	ft_free (to_del, ft_heap ());
+	sh->env_count -= 1;
+	return (TRUE);
 }
