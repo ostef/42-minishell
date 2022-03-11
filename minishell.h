@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/10 17:43:51 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:12:34 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,19 @@
 
 # include "libft.h"
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+typedef enum e_err
+{
+	OK = 0,
+	ERR_MEMORY = 1,
+	ERR_CMD_NO_SUCH_FILE = 127,
+	ERR_CMD_NOT_FOUND = 128,
+	ERR_CMD_PERM = 129
+}	t_err;
 
 typedef struct s_env
 {
@@ -121,9 +132,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  * Removes the environment variable named `name` from the sh->env list.
  * Returns TRUE if the variable was in the list, FALSE otherwise.
  */
-void	env_remove(t_shell *sh, t_cstr name);
-
-
+t_bool	env_remove(t_shell *sh, t_cstr name);
 
 /* Command line parsing */
 
@@ -132,6 +141,7 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
+t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
 void	cmd_exec(t_shell *sh, t_cmd *cmd);
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);

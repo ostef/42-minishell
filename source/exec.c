@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/10 17:39:53 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:12:45 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,21 @@ static t_str	*env_list_to_array(t_shell *sh)
 
 void	cmd_exec(t_shell *sh, t_cmd *cmd)
 {
-	ft_println ("Executing '%s'.", cmd->args[0]);
+	t_cstr	full_path;
+	t_err	err;
+	
+	err = cmd_find_path (sh, cmd->args[0], &full_path);
+	if (err != OK)
+	{
+		if (err == ERR_CMD_NO_SUCH_FILE)
+			eprint ("%s: No such file or directory", cmd->args[0]);
+		else if (err == ERR_CMD_NOT_FOUND)
+			eprint ("%s: command not found", cmd->args[0]);
+		else if (err == ERR_CMD_PERM)
+			eprint ("%s: Permission denied", cmd->args[0]);
+		return ;
+	}
+	ft_println ("Executing '%s' ('%s').", cmd->args[0], full_path);
 	if (cmd->next)
 		pipe (cmd->pipe);
 	cmd->pid = fork ();
@@ -62,7 +76,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		if (cmd->prev)
 			dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 		cmd_close_all_pipes (cmd);
-		if (execve (cmd->args[0], cmd->args, env_list_to_array (sh)) == -1)
+		if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
 			exit (128);
 	}
 }

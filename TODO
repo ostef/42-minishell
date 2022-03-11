@@ -1,19 +1,13 @@
 Ana:
-* Environment variables
-* env_parse, env_get, env_set, env_remove
+* env_get
+* History
 * Variable expansion ($ sign)
 * Redirections
-* History
 
 Stefan:
-* Cmd execution, pipes
 * Make error codes when execve fails match bash
-* Cmd line parsing
-* Handle file permission errors
-* Handle file not found errors
 * Handle "$cmd_ok | cmd_ok | cmd_not_ok | cmd_ok" type situation
 
-* PATH search
 * Shell arguments
 * Builtins
 * Signals
