@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/10 17:40:58 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 13:48:26 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,10 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  */
 void	env_remove(t_shell *sh, t_cstr name);
 
-
-
 /* Command line parsing */
 
 t_cmd	*cmd_add(t_cmd_line *line);
-t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line);
+t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
 
 /* Execution */
 

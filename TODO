@@ -17,3 +17,7 @@ Stefan:
 * Shell arguments
 * Builtins
 * Signals
+
+
+To remember ; 
+Echo $$ > 12312

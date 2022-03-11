@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/10 17:41:07 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 14:19:15 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bool	env_parse(t_cstr str, t_env *env)
 {
-	t_lexer lexer;
+	t_lexer	lexer;
 	t_token	*token;
 
 	ft_lexer_init(&lexer, str, ft_temp());
@@ -25,7 +25,7 @@ t_bool	env_parse(t_cstr str, t_env *env)
 			return (FALSE);
 		env->name = ft_strndup(token->str, token->len, ft_temp());
 		if (!env->name)
-		 	return (FALSE);
+			return (FALSE);
 		if (!ft_lexer_skip_char(&lexer, '='))
 		{
 			if (lexer.curr < lexer.end)
@@ -75,13 +75,11 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 
 t_env	*env_get_node(t_shell *sh, t_cstr name)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	temp = sh->env_first;
-	//ft_assert (name != NULL, "name is NULL!");
 	while (temp)
 	{
-		//ft_assert (temp->name != NULL, "temp->name is NULL!");
 		if (ft_strequ(temp->name, name))
 			return (temp);
 		temp = temp->next;
