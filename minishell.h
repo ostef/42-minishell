@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 13:48:26 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:11:44 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_shell
 	t_str	*env_original;	/* @Cleanup: remove this when we have env parsing and stuff */
 	t_env	*env_first;
 	t_env	*env_last;
+	t_int	env_count;
 	t_int	last_exit_code;
 }	t_shell;
 
@@ -120,7 +121,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  * Removes the environment variable named `name` from the sh->env list.
  * Returns TRUE if the variable was in the list, FALSE otherwise.
  */
-void	env_remove(t_shell *sh, t_cstr name);
+t_bool	env_remove(t_shell *sh, t_cstr name);
 
 /* Command line parsing */
 

@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/11 14:19:15 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:11:05 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 	else
 		sh->env_first = env_new;
 	sh->env_last = env_new;
+	sh->env_count += 1;
 	return (FALSE);
 }
 
@@ -87,16 +88,30 @@ t_env	*env_get_node(t_shell *sh, t_cstr name)
 	return (NULL);
 }
 
-void	env_remove(t_shell *sh, t_cstr name)
+t_cstr	env_get(t_shell *sh, t_cstr name)
+{
+	t_env	*env;
+
+	env = env_get_node (sh, name);
+	if (!env)
+		return (NULL);
+	return (env->val);
+}
+
+t_bool	env_remove(t_shell *sh, t_cstr name)
 {
 	t_env	*to_del;
 	t_env	*prev;
 	t_env	*next;
 
 	to_del = env_get_node(sh, name);
+	if (!to_del)
+		return (FALSE);
 	prev = to_del->prev;
 	next = to_del->next;
 	prev->next = next;
 	next->prev = prev;
-	free(to_del);
+	ft_free (to_del, ft_heap ());
+	sh->env_count -= 1;
+	return (TRUE);
 }
