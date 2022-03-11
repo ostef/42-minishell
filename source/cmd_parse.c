@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/10 17:24:25 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:10:39 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_bool	cmd_null_terminate_args(t_cmd *cmd)
 	if (cmd->args_count == cmd->args_cap)
 	{
 		cmd->args = ft_realloc (cmd->args, cmd->args_cap * sizeof (t_str),
-			(cmd->args_cap + cmd->args_cap + 8) * sizeof (t_str), ft_temp ());
+				(cmd->args_cap + cmd->args_cap + 8) * sizeof (t_str), ft_temp ());
 		if (!cmd->args)
 			return (FALSE);
 		cmd->args_cap += cmd->args_cap + 8;
@@ -77,7 +77,41 @@ static t_bool	cmd_add_arg(t_cmd *cmd, t_cstr arg, t_s64 arg_len)
 	return (TRUE);
 }
 
-static t_bool	cmd_parse(t_lexer *lexer, t_cmd *out)
+t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
+{
+	t_lexer	lexer;
+	t_token	*token;
+	t_str	result;
+	t_int	nb_dollars;
+	
+	ft_lexer_init_n(&lexer, str, len, ft_temp());
+	nb_dollars = ft_count_chars(str, '$', len);
+	if (nb_dollars < 1 || str[len - 1] == '$')
+		return (str);
+	while (nb_dollars && lexer.curr < lexer.end)
+	{
+		ft_lexer_skip_delim(&lexer, "$");
+		ft_lexer_skip_char(&lexer, '$');
+		token = ft_lexer_skip_identifier(&lexer);
+		if ((token->str)[0] == '$')
+			return (str);
+		
+		ft_println ("J'ai trouve un dollar! %.*s", token->len, token->str);
+		nb_dollars--;
+	}
+	result = ft_strndup(token->str, token->len, ft_temp());
+	return (result);
+	//env_get_node(sh, str);
+}
+
+
+t_str	string_replace(t_str to_find, t_str to_replace)
+{
+	
+}
+
+
+static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 {
 	t_token	*token;
 
@@ -90,7 +124,10 @@ static t_bool	cmd_parse(t_lexer *lexer, t_cmd *out)
 		if (!token)
 			break ;
 		if (token->len > 0)
+		{
+			replace_dollars(sh, token->str, token->len);
 			cmd_add_arg (out, token->str, token->len);
+		}
 		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
 	}
@@ -99,7 +136,7 @@ static t_bool	cmd_parse(t_lexer *lexer, t_cmd *out)
 	return (cmd_null_terminate_args (out));
 }
 
-t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
+t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 {
 	t_lexer	lexer;
 	t_cmd	*cmd;
@@ -111,7 +148,7 @@ t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line)
 		cmd = cmd_add (line);
 		if (!cmd)
 			return (FALSE);
-		if (!cmd_parse (&lexer, cmd))
+		if (!cmd_parse (sh, &lexer, cmd))
 		{
 			eprint ("syntax error near unexpected token `%c'", *lexer.curr);
 			return (FALSE);

@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 17:12:34 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 17:16:08 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ t_bool	env_remove(t_shell *sh, t_cstr name);
 /* Command line parsing */
 
 t_cmd	*cmd_add(t_cmd_line *line);
-t_bool	cmd_line_parse(t_cstr str, t_cmd_line *line);
+t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
