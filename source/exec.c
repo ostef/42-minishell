@@ -31,7 +31,7 @@ static t_str	*env_list_to_array(t_shell *sh)
 	t_env	*curr;
 	t_int	i;
 
-	result = (t_str *)ft_alloc (sizeof (t_str) * (sh->env_count + 1), ft_temp ());
+	result = (t_str *)ft_alloc (sizeof (t_str) * (sh->env_count + 1),ft_temp ());
 	if (!result)
 		return (NULL);
 	i = 0;
