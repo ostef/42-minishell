@@ -8,6 +8,7 @@ Stefan:
 * Shell arguments
 * cd: Handle ~
 
+* Write all output in STDERR
 * Builtins:
 	- echo et l’option -n
 	- cd uniquement avec un chemin relatif ou absolu
