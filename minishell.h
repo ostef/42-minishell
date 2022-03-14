@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 17:16:08 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 15:28:25 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ typedef struct s_env
  *
  * args: All the command arguments as an array of strings, indexing in
  * `flat_args`. This includes the name of the command and is null-terminated
- * 
- * args_cap: The size of the `args` buffer in t_strs
  *
  * arg_count: The number of entries in `args`
+ *
+ * args_cap: The size of the `args` buffer in t_strs
  *
  * pid: The PID of the command when it gets executed.
  *
@@ -65,6 +65,9 @@ typedef struct s_env
  * The pipe is used for communication between commands N and N + 1,
  * pipe[PIPE_READ] is the fd to read from, pipe[PIPE_WRITE] is the fd to
  * write to. If there is no pipe, then both are set to 0.
+ *
+ * builtin_exit_status: The exit status of the command when it finished,
+ * if it is a builtin.
  */
 
 typedef struct s_cmd
@@ -76,10 +79,11 @@ typedef struct s_cmd
 	t_s64			flat_args_count;
 	t_s64			flat_args_cap;
 	t_str			*args;
-	t_s64			args_cap;
 	t_s64			args_count;
+	t_s64			args_cap;
 	pid_t			pid;
 	t_file			pipe[2];
+	t_int			builtin_exit_status;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }	t_cmd;
@@ -96,7 +100,7 @@ typedef struct s_shell
 	t_env	*env_first;
 	t_env	*env_last;
 	t_int	env_count;
-	t_int	last_exit_code;
+	t_int	last_exit_status;
 }	t_shell;
 
 /* Error */
@@ -146,6 +150,7 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
+t_bool	cmd_is_builtin(t_cmd *cmd);
 /*
  * Searches all directories in the PATH environment variable for a command
  * with the name `cmd_name` that can be executed, unless `cmd_name` is a path
@@ -159,10 +164,19 @@ t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
 /*
  * Executes the command `cmd`. If the command cannot be executed (cmd_find_path
  * failed), an error message is printed. This function is responsible for
- * opening pipes for cmd and cmd->next.
+ * opening pipes for cmd and cmd->next. The pipe is opened even if the command
+ * cannot be executed, because it needs to be accessible by the next command.
+ * The fork is always executed, and if an error occurs when executing the
+ * command, exit is called with the appropriate exit code.
  */
 void	cmd_exec(t_shell *sh, t_cmd *cmd);
+t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
+
+/* Builtins */
+
+t_int	builtin_cd(t_shell *sh, t_cmd *cmd);
+t_int	builtin_pwd(t_shell *sh, t_cmd *cmd);
 
 #endif

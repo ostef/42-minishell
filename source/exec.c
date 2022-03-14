@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 17:12:45 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 15:38:14 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ static void	cmd_close_all_pipes(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		if (cmd->next)
-		{
+		if (cmd->pipe[PIPE_READ])
 			close (cmd->pipe[PIPE_READ]);
+		if (cmd->pipe[PIPE_WRITE])
 			close (cmd->pipe[PIPE_WRITE]);
-		}
 		cmd = cmd->prev;
 	}
 }
@@ -31,7 +30,8 @@ static t_str	*env_list_to_array(t_shell *sh)
 	t_env	*curr;
 	t_int	i;
 
-	result = (t_str *)ft_alloc (sizeof (t_str) * (sh->env_count + 1),ft_temp ());
+	result = (t_str *)ft_alloc (
+			sizeof (t_str) * (sh->env_count + 1), ft_temp ());
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -49,35 +49,47 @@ static t_str	*env_list_to_array(t_shell *sh)
 	return (result);
 }
 
-void	cmd_exec(t_shell *sh, t_cmd *cmd)
+static void	cmd_handle_error(t_cmd *cmd, t_err err)
 {
-	t_cstr	full_path;
-	t_err	err;
-	
-	err = cmd_find_path (sh, cmd->args[0], &full_path);
-	if (err != OK)
+	if (err == ERR_CMD_PERM)
+	{
+		eprint ("%s: Permission denied", cmd->args[0]);
+		exit (126);
+	}
+	else if (err != OK)
 	{
 		if (err == ERR_CMD_NO_SUCH_FILE)
 			eprint ("%s: No such file or directory", cmd->args[0]);
 		else if (err == ERR_CMD_NOT_FOUND)
 			eprint ("%s: command not found", cmd->args[0]);
-		else if (err == ERR_CMD_PERM)
-			eprint ("%s: Permission denied", cmd->args[0]);
-		return ;
+		exit (127);
 	}
-	ft_println ("Executing '%s' ('%s').", cmd->args[0], full_path);
+}
+
+void	cmd_exec(t_shell *sh, t_cmd *cmd)
+{
+	t_cstr	full_path;
+	t_err	err;
+
 	if (cmd->next)
 		pipe (cmd->pipe);
-	cmd->pid = fork ();
-	if (cmd->pid == 0)
+	if (cmd_is_builtin (cmd))
+		cmd->builtin_exit_status = cmd_exec_builtin (sh, cmd);
+	else
 	{
-		if (cmd->next)
-			dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
-		if (cmd->prev)
-			dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
-		cmd_close_all_pipes (cmd);
-		if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
-			exit (128);
+		cmd->pid = fork ();
+		if (cmd->pid == 0)
+		{
+			err = cmd_find_path (sh, cmd->args[0], &full_path);
+			if (cmd->next)
+				dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
+			if (cmd->prev)
+				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
+			cmd_close_all_pipes (cmd);
+			cmd_handle_error (cmd, err);
+			if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
+				exit (errno);
+		}
 	}
 }
 
@@ -97,7 +109,13 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	cmd = line->first;
 	while (cmd)
 	{
-		waitpid (cmd->pid, &status, 0);
+		if (cmd_is_builtin (cmd))
+			status = cmd->builtin_exit_status;
+		else
+		{
+			waitpid (cmd->pid, &status, 0);
+			status = WEXITSTATUS (status);
+		}
 		cmd = cmd->next;
 	}
 	return (status);
