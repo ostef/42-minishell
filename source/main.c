@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/11 13:46:43 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 15:36:39 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	while (TRUE)
 	{
 		ft_reset_temp_storage ();
-		input = readline("$");
+		input = readline("minishell$ ");
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
 		{
-			sh.last_exit_code = cmd_line_exec (&sh, &cmd_line);
-			ft_println ("$? = %i", sh.last_exit_code);
+			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
+			ft_println ("$? = %i", sh.last_exit_status);
 		}
 		free (input);
 	}
