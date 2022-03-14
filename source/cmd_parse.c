@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 17:10:39 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/14 14:33:08 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 		if (!cmd_parse (sh, &lexer, cmd))
 		{
 			eprint ("syntax error near unexpected token `%c'", *lexer.curr);
+			sh->last_exit_status = 258;
 			return (FALSE);
 		}
 		ft_lexer_skip_char (&lexer, '|');
