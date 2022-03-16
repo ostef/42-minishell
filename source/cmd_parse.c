@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/16 13:33:04 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/16 18:59:29 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,33 +83,28 @@ t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
 	t_token	*token;
 	t_str	result;
 	t_int	nb_dollars;
-	
+
 	ft_lexer_init_n(&lexer, str, len, ft_temp());
 	nb_dollars = ft_count_chars(str, '$', len);
 	if (nb_dollars < 1 || str[len - 1] == '$')
 		return (str);
-	while (nb_dollars && lexer.curr < lexer.end)
+	result = "";
+	while (lexer.curr < lexer.end)
 	{
-		ft_lexer_skip_delim(&lexer, "$");
+		token = ft_lexer_skip_delim(&lexer, "$");
+		ft_println ("token str = %.*s", token->len, token->str);
+		printf ("len = %ld", token->len);
+		result = ft_fmt(ft_temp(), "%s%.*s", result, token->len, token->str);
 		ft_lexer_skip_char(&lexer, '$');
 		token = ft_lexer_skip_identifier(&lexer);
-		if ((token->str)[0] == '$')
-			return (str);
-		
-		ft_println ("J'ai trouve un dollar! %.*s", token->len, token->str);
+		if (token)
+			result = ft_fmt(ft_temp(), "%s%s", result, env_get(sh,
+				ft_strndup(token->str, token->len, ft_temp())));
 		nb_dollars--;
 	}
-	result = ft_strndup(token->str, token->len, ft_temp());
+	ft_println ("result = %s", result);
 	return (result);
-	//env_get_node(sh, str);
 }
-
-/*
-t_str	string_replace(t_str to_find, t_str to_replace)
-{
-	
-}
-*/
 
 static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 {
