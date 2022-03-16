@@ -1,17 +1,25 @@
 Ana:
-* env_get
 * History
 * Variable expansion ($ sign)
 * Redirections
-
-Stefan:
-* Make error codes when execve fails match bash
-* Handle "$cmd_ok | cmd_ok | cmd_not_ok | cmd_ok" type situation
-
-* Shell arguments
-* Builtins
 * Signals
 
+Stefan:
+* Shell arguments
+* cd: Handle ~
+
+* Write all output in STDERR
+* Builtins:
+	- echo et l’option -n
+	- cd uniquement avec un chemin relatif ou absolu
+	- pwd sans aucune option
+	- export sans aucune option
+	- unset sans aucune option
+	- env sans aucune option ni argument
+	- exit sans aucune option
+* Norminette!!
+* Handle exit status on parsing error
+* Nice prompt
 
 To remember ; 
 Echo $$ > 12312
