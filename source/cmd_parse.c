@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/11 17:10:39 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/16 13:31:52 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,12 @@ t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
 	//env_get_node(sh, str);
 }
 
-
+/*
 t_str	string_replace(t_str to_find, t_str to_replace)
 {
 	
 }
-
+*/
 
 static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 {
