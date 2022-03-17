@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/16 18:58:35 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 13:55:27 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,8 @@ t_cstr	env_get(t_shell *sh, t_cstr name)
 	t_env	*env;
 
 	env = env_get_node (sh, name);
-	printf("HERE");
-		return (" lolmdr");
 	if ((!env) || (!env->name) || (!env->val))
-	{
-		printf("HERE");
-		return (" lolmdr");
-	}
+		return ("");
 	return (env->val);
 }
 

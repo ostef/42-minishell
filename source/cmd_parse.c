@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/16 18:59:29 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 13:49:10 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
 	while (lexer.curr < lexer.end)
 	{
 		token = ft_lexer_skip_delim(&lexer, "$");
-		ft_println ("token str = %.*s", token->len, token->str);
-		printf ("len = %ld", token->len);
+		//ft_println ("token str = %.*s", token->len, token->str);
+		//printf ("len = %ld", token->len);
 		result = ft_fmt(ft_temp(), "%s%.*s", result, token->len, token->str);
 		ft_lexer_skip_char(&lexer, '$');
 		token = ft_lexer_skip_identifier(&lexer);
