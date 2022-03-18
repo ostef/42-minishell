@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/18 17:27:35 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 18:09:19 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,9 +190,12 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
 
+
 /* Builtins */
 
 t_int	builtin_cd(t_shell *sh, t_cmd *cmd);
 t_int	builtin_pwd(t_shell *sh, t_cmd *cmd);
+
+
 
 #endif
