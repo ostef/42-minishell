@@ -7,6 +7,8 @@ Ana:
 Stefan:
 * Shell arguments
 * cd: Handle ~
+* redir: Handle ~
+* cmd exec: Handle ~
 
 * Write all output in STDERR
 * Builtins:
