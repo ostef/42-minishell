@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/16 13:33:13 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 14:53:21 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	parse_envp(t_shell *sh, t_str *envp)
 {
 	t_env	env;
 	t_int	i;
-	
 
 	i = 0;
 	while (envp[i])
@@ -47,10 +46,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 			break ;
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
-		{
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
-			ft_println ("$? = %i", sh.last_exit_status);
-		}
 		free (input);
 	}
 	return (0);

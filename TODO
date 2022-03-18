@@ -1,6 +1,6 @@
 Ana:
 * History
-* Variable expansion ($ sign)
+* Variable expansion ($ sign) Done
 * Redirections
 * Signals
 
@@ -22,4 +22,4 @@ Stefan:
 * Nice prompt
 
 To remember ; 
-Echo $$ > 12312
+Echo $$ > 12312 (not required in the subject)

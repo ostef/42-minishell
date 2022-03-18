@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/17 13:49:10 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 15:04:28 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,25 @@ t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
 	ft_lexer_init_n(&lexer, str, len, ft_temp());
 	nb_dollars = ft_count_chars(str, '$', len);
 	if (nb_dollars < 1 || str[len - 1] == '$')
-		return (str);
+		return (ft_strndup(str, len, ft_temp()));
 	result = "";
 	while (lexer.curr < lexer.end)
 	{
 		token = ft_lexer_skip_delim(&lexer, "$");
-		//ft_println ("token str = %.*s", token->len, token->str);
-		//printf ("len = %ld", token->len);
 		result = ft_fmt(ft_temp(), "%s%.*s", result, token->len, token->str);
 		ft_lexer_skip_char(&lexer, '$');
-		token = ft_lexer_skip_identifier(&lexer);
+		token = ft_lexer_skip_char(&lexer, '?');
 		if (token)
+			result = (ft_fmt(ft_temp(), "%s%d", result, sh->last_exit_status));
+		else
+			token = ft_lexer_skip_identifier(&lexer);
+		if (token)
+		{	
 			result = ft_fmt(ft_temp(), "%s%s", result, env_get(sh,
 				ft_strndup(token->str, token->len, ft_temp())));
+		}
 		nb_dollars--;
 	}
-	ft_println ("result = %s", result);
 	return (result);
 }
 
@@ -112,16 +115,17 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 
 	while (lexer->curr < lexer->end)
 	{
-		ft_lexer_skip_spaces (lexer);
-		token = ft_lexer_skip_quoted_str (lexer);
+		ft_lexer_skip_spaces(lexer);
+		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
-			token = ft_lexer_skip_delim (lexer, "\v\t\n\r |");
+			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |");
 		if (!token)
 			break ;
 		if (token->len > 0)
 		{
-			replace_dollars(sh, token->str, token->len);
-			cmd_add_arg (out, token->str, token->len);
+			token->str = replace_dollars(sh, token->str, token->len);
+			token->len = ft_strlen(token->str);
+			cmd_add_arg(out, token->str, token->len);
 		}
 		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
