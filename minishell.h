@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/16 18:01:51 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 17:18:05 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,33 @@ typedef struct s_env
  * if it is a builtin.
  */
 
+typedef enum e_redir_kind
+{
+	RD_NONE = 0,
+	RD_OUT = 1,
+	RD_OUT_APPEND = 2,
+	RD_IN = 3,
+	RD_IN_HERE = 4
+}	t_redir_kind;
+
+typedef struct s_redir
+{
+	t_redir_kind	kind;
+	t_str			filename;
+	struct s_redir	*prev;
+	struct s_redir	*next;
+}	t_redir;
+
 typedef struct s_cmd
 {
-	t_str			in_filename;
-	t_str			out_filename;
-	t_bool			out_append;
 	t_str			flat_args;
 	t_s64			flat_args_count;
 	t_s64			flat_args_cap;
 	t_str			*args;
 	t_s64			args_count;
 	t_s64			args_cap;
+	t_redir			*first_redir;
+	t_redir			*last_redir;
 	pid_t			pid;
 	t_file			pipe[2];
 	t_int			builtin_exit_status;
