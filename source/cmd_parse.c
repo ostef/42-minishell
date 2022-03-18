@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/18 15:04:28 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 17:56:50 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,68 @@ t_cstr	replace_dollars(t_shell *sh, t_cstr str, t_int len)
 	return (result);
 }
 
+static t_redir	*cmd_add_redir(t_cmd *cmd, t_redir_kind kind, t_cstr filename, t_s64 len)
+{
+	t_redir	*new;
+	t_redir	*tmp_next;
+
+	new = (t_redir *)ft_zalloc (sizeof (t_redir), ft_temp ());
+	if (!new)
+		return (NULL);
+	new->kind = kind;
+	new->filename = ft_strndup (filename, len, ft_temp ());
+	if (cmd->last_redir)
+	{
+		tmp_next = cmd->last_redir->next;
+		cmd->last_redir->next = new;
+		new->prev = cmd->last_redir;
+		new->next = tmp_next;
+		if (tmp_next)
+			tmp_next->prev = new;
+	}
+	else
+		cmd->first_redir = new;
+	cmd->last_redir = new;
+	return (new);
+}
+
+static t_redir_kind	cmd_parse_redir_symbol(t_lexer *lexer)
+{
+	t_token			*token;
+	t_redir_kind	kind;
+
+	token = ft_lexer_skip_string (lexer, "<<");
+	kind = RD_IN_HERE;
+	if (!token)
+	{
+		token = ft_lexer_skip_string (lexer, "<");
+		kind = RD_IN;
+	}
+	if (!token)
+	{
+		token = ft_lexer_skip_string (lexer, ">>");
+		kind = RD_OUT_APPEND;
+	}
+	if (!token)
+	{
+		token = ft_lexer_skip_string (lexer, ">");
+		kind = RD_OUT;
+	}
+	if (!token)
+		return (RD_NONE);
+	ft_lexer_skip_spaces (lexer);
+	return (kind);
+}
+
 static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 {
-	t_token	*token;
+	t_token			*token;
+	t_redir_kind	redir_kind;
 
 	while (lexer->curr < lexer->end)
 	{
 		ft_lexer_skip_spaces(lexer);
+		redir_kind = cmd_parse_redir_symbol (lexer);
 		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
 			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |");
@@ -125,7 +180,10 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		{
 			token->str = replace_dollars(sh, token->str, token->len);
 			token->len = ft_strlen(token->str);
-			cmd_add_arg(out, token->str, token->len);
+			if (redir_kind)
+				cmd_add_redir (out, redir_kind, token->str, token->len);
+			else
+				cmd_add_arg (out, token->str, token->len);
 		}
 		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
