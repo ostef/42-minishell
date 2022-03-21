@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/18 18:09:19 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/21 16:03:03 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum e_err
 {
 	OK = 0,
 	ERR_MEMORY = 1,
+	ERR_CMD_IS_DIR = 126,
 	ERR_CMD_NO_SUCH_FILE = 127,
 	ERR_CMD_PERM = 128,
 	ERR_CMD_NOT_FOUND = 129,
@@ -41,13 +42,10 @@ typedef struct s_env
 # define PIPE_WRITE 1
 
 /*
- * in_filename, out_filename: Input and output redirection filenames, set to
- * NULL if there is no redirection
- *
- * out_append: This is set to TRUE if the output redirection is of type >>
- *
  * flat_args: All the command arguments in a flat array, separated by \0s.
  * This includes the name of the command.
+ *
+ * flag_args_count: The number of arguments following each other in `flag_args`
  * 
  * flat_args_cap: The size of the `flat_args` buffer in chars
  *
@@ -57,6 +55,10 @@ typedef struct s_env
  * arg_count: The number of entries in `args`
  *
  * args_cap: The size of the `args` buffer in t_strs
+ *
+ * redir_first: The first node of the linked list of redirections
+ * 
+ * redir_last: The last node of the linked list of redirections
  *
  * pid: The PID of the command when it gets executed.
  *
@@ -95,8 +97,8 @@ typedef struct s_cmd
 	t_str			*args;
 	t_s64			args_count;
 	t_s64			args_cap;
-	t_redir			*first_redir;
-	t_redir			*last_redir;
+	t_redir			*redir_first;
+	t_redir			*redir_last;
 	pid_t			pid;
 	t_file			pipe[2];
 	t_int			builtin_exit_status;
@@ -117,6 +119,7 @@ typedef struct s_shell
 	t_env	*env_last;
 	t_int	env_count;
 	t_int	last_exit_status;
+	t_bool	should_exit;
 }	t_shell;
 
 /* Error */
@@ -161,41 +164,18 @@ t_bool	env_remove(t_shell *sh, t_cstr name);
 
 /* Command line parsing */
 
-t_cmd	*cmd_add(t_cmd_line *line);
 t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
 
 /* Execution */
 
-t_bool	cmd_is_builtin(t_cmd *cmd);
-/*
- * Searches all directories in the PATH environment variable for a command
- * with the name `cmd_name` that can be executed, unless `cmd_name` is a path
- * (it starts with ~, . or /). `out_filename` receives the full path of the
- * command, allocated with ft_temp (), or `cmd_name` directly if it is a path.
- * Returns OK if a valid path was found, otherwise one of ERR_CMD_NO_SUCH_FILE,
- * ERR_CMD_PERM is returned if `cmd_name` is a path, or ERR_CMD_NOT_FOUND if
- * the command name is not a path.
- */
-t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
-/*
- * Executes the command `cmd`. If the command cannot be executed (cmd_find_path
- * failed), an error message is printed. This function is responsible for
- * opening pipes for cmd and cmd->next. The pipe is opened even if the command
- * cannot be executed, because it needs to be accessible by the next command.
- * The fork is always executed, and if an error occurs when executing the
- * command, exit is called with the appropriate exit code.
- */
-void	cmd_exec(t_shell *sh, t_cmd *cmd);
-t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
 
-
 /* Builtins */
 
+t_int	builtin_echo(t_shell *sh, t_cmd *cmd);
 t_int	builtin_cd(t_shell *sh, t_cmd *cmd);
 t_int	builtin_pwd(t_shell *sh, t_cmd *cmd);
-
-
+t_int	builtin_exit(t_shell *sh, t_cmd *cmd);
 
 #endif
