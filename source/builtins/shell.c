@@ -1,38 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dir.c                                              :+:      :+:    :+:   */
+/*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 14:02:40 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 16:04:52 by soumanso         ###   ########lyon.fr   */
+/*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
+/*   Updated: 2022/03/21 16:09:37 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
+t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 {
-	char	cwd_buff[PATH_MAX];
-	t_cstr	new_dir;
+	t_bool	print_newline;
+	t_int	i;
 
-	if (cmd->args_count < 2 || cmd->prev || cmd->next)
-		return (0);
-	new_dir = cmd->args[1];
-	if (chdir (new_dir) == -1)
+	i = 1;
+	print_newline = TRUE;
+	if (cmd->args_count > 1 && ft_strequ(cmd->args[1], "-n"))
 	{
-		eprint ("cd: %s: %m", new_dir);
-		return (1);
+		print_newline = FALSE;
+		i += 1;
 	}
-	getcwd (cwd_buff, PATH_MAX);
-	env_set (sh, "OLDPWD", env_get (sh, "PWD"));
-	env_set (sh, "PWD", cwd_buff);
+	while (i < cmd->args_count)
+	{
+		ft_print (cmd->args[i]);
+		if (i != cmd->args_count - 1)
+			ft_print (" ");
+		i += 1;
+	}
+	if (print_newline)
+		ft_print ("\n");
 	return (0);
 }
 
-t_int	builtin_pwd(t_shell *sh, t_cmd *cmd)
+t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 {
-	ft_println (env_get (sh, "PWD"));
+	if (!cmd->next && !cmd->prev)
+		sh->should_exit = TRUE;
 	return (0);
 }
