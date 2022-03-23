@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/21 16:03:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/23 15:56:23 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,33 @@ static void	env_free(t_shell *sh)
 	}
 }
 
+static t_str	show_prompt(t_shell *sh)
+{
+	t_str	result;
+	t_cstr	prompt;
+	t_int	i;
+
+	prompt = env_get (sh, "PWD");
+	if (ft_strequ (prompt, env_get (sh, "HOME")))
+		prompt = "~";
+	else
+	{
+		i = ft_strlen (prompt);
+		while (i > 0)
+		{
+			if (prompt[i - 1] == '/')
+				break ;
+			i -= 1;
+		}
+		prompt += i;
+	}
+	if (sh->last_exit_status == 0)
+		prompt = ft_fmt (ft_temp (), "\033[0;1;32m%s$ \033[0m", prompt);
+	else
+		prompt = ft_fmt (ft_temp (), "\033[0;1;31m%s$ \033[0m", prompt);
+	return readline (prompt);
+}
+
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;
@@ -56,7 +83,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	while (!sh.should_exit)
 	{
 		ft_reset_temp_storage ();
-		input = readline("minishell$ ");
+		input = show_prompt(&sh);
 		if (!input)
 			break ;
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
