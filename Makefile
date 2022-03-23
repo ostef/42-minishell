@@ -1,8 +1,8 @@
 NAME = minishell
 SRC_DIR = source
 SRC_FILES = main.c error.c env.c\
-	parse/parse.c parse/args.c parse/redirs.c parse/post_process.c\
-	exec/exec.c exec/find.c exec/builtin.c\
+	parse/parse.c parse/args.c parse/redirs_parse.c parse/post_process.c\
+	exec/exec.c exec/find.c exec/builtin.c exec/redirs_exec.c\
 	builtins/dir.c builtins/shell.c
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
