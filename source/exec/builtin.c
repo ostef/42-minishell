@@ -6,11 +6,11 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:34:11 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/14 15:40:44 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/21 15:34:11 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static void	save_std_fds(t_file fds[3])
 {
@@ -40,7 +40,7 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 	if (cmd->prev)
 		dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 	if (ft_strequ (cmd->args[0], "echo"))
-		exit_status = 1;
+		exit_status = builtin_echo (sh, cmd);
 	else if (ft_strequ (cmd->args[0], "cd"))
 		exit_status = builtin_cd (sh, cmd);
 	else if (ft_strequ (cmd->args[0], "pwd"))
@@ -52,7 +52,7 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 	else if (ft_strequ (cmd->args[0], "env"))
 		exit_status = 1;
 	else if (ft_strequ (cmd->args[0], "exit"))
-		exit_status = 1;
+		exit_status = builtin_exit (sh, cmd);
 	restore_std_fds (std_fds);
 	return (exit_status);
 }

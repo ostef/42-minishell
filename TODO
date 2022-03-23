@@ -3,22 +3,17 @@ Ana:
 * Variable expansion ($ sign) Done
 * Redirections
 * Signals
+* Builtins:
+	- export
+	- unset
+	- env
 
 Stefan:
 * Shell arguments
-* cd: Handle ~
-* redir: Handle ~
-* cmd exec: Handle ~
+* cd: Print errors when there are other commands
+* Handle parsing errors with redirections (< < for example)
 
-* Write all output in STDERR
-* Builtins:
-	- echo et l’option -n
-	- cd uniquement avec un chemin relatif ou absolu
-	- pwd sans aucune option
-	- export sans aucune option
-	- unset sans aucune option
-	- env sans aucune option ni argument
-	- exit sans aucune option
+* Ensure output is written at the right place
 * Norminette!!
 * Handle exit status on parsing error
 * Nice prompt

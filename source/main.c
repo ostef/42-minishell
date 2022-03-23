@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/18 14:53:21 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/21 16:03:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ static void	parse_envp(t_shell *sh, t_str *envp)
 	}
 }
 
+static void	env_free(t_shell *sh)
+{
+	t_env	*next;
+
+	while (sh->env_first)
+	{
+		next = sh->env_first->next;
+		ft_free (sh->env_first->name, ft_heap ());
+		ft_free (sh->env_first->val, ft_heap ());
+		ft_free (sh->env_first, ft_heap ());
+		sh->env_first = next;
+		sh->env_count -= 1;
+	}
+}
+
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;
@@ -38,7 +53,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	ft_init_temp_storage ();
 	ft_memset (&sh, 0, sizeof (t_shell));
 	parse_envp (&sh, envp);
-	while (TRUE)
+	while (!sh.should_exit)
 	{
 		ft_reset_temp_storage ();
 		input = readline("minishell$ ");
@@ -49,5 +64,6 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
 		free (input);
 	}
+	env_free (&sh);
 	return (0);
 }

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_find.c                                         :+:      :+:    :+:   */
+/*   find.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:32:22 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/18 14:52:18 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/21 15:45:38 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
 static t_bool	is_path(t_cstr filename)
 {
-	return (filename[0] == '~' || filename[0] == '.' || filename[0] == '/');
+	return (filename[0] == '.' || filename[0] == '/');
 }
 
 static t_err	is_command(t_cstr filename)
@@ -26,7 +26,7 @@ static t_err	is_command(t_cstr filename)
 	if (stat (filename, &stat_res) == 0)
 	{
 		if (S_ISDIR (stat_res.st_mode))
-			return (ERR_CMD_NOT_FOUND);
+			return (ERR_CMD_IS_DIR);
 		else if (access (filename, X_OK) != 0)
 			return (ERR_CMD_PERM);
 	}

@@ -6,13 +6,13 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/14 15:38:14 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/21 15:46:06 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "exec.h"
 
-static void	cmd_close_all_pipes(t_cmd *cmd)
+static void	cmd_close_prev_pipes(t_cmd *cmd)
 {
 	while (cmd)
 	{
@@ -58,7 +58,9 @@ static void	cmd_handle_error(t_cmd *cmd, t_err err)
 	}
 	else if (err != OK)
 	{
-		if (err == ERR_CMD_NO_SUCH_FILE)
+		if (err == ERR_CMD_IS_DIR)
+			eprint ("%s: is a directory", cmd->args[0]);
+		else if (err == ERR_CMD_NO_SUCH_FILE)
 			eprint ("%s: No such file or directory", cmd->args[0]);
 		else if (err == ERR_CMD_NOT_FOUND)
 			eprint ("%s: command not found", cmd->args[0]);
@@ -85,7 +87,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 				dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
 			if (cmd->prev)
 				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
-			cmd_close_all_pipes (cmd);
+			cmd_close_prev_pipes (cmd);
 			cmd_handle_error (cmd, err);
 			if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
 				exit (errno);
@@ -105,7 +107,7 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 		cmd_exec (sh, cmd);
 		cmd = cmd->next;
 	}
-	cmd_close_all_pipes (line->last);
+	cmd_close_prev_pipes (line->last);
 	cmd = line->first;
 	while (cmd)
 	{
