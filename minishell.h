@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/23 19:04:25 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/24 13:27:14 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_cmd
 	t_s64			args_count;
 	t_s64			args_cap;
 	t_redir			*redir_first;
+	t_redir			*redir_link;
 	t_redir			*redir_last;
 	pid_t			pid;
 	t_file			pipe[2];

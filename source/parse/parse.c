@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 15:11:44 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/24 15:51:09 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 	while (lexer->curr < lexer->end)
 	{
 		ft_lexer_skip_spaces(lexer);
-		redir_kind = cmd_parse_redir_symbol (lexer);
+		redir_kind = cmd_parse_redir_symbol(lexer);
 		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
 			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |");
@@ -62,6 +62,8 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
 	}
+	//if (out->redir_first-> kind == RD_OUT_APPEND || out->redir_first-> kind == RD_OUT)
+	//	return (TRUE);
 	if (out->args_count == 0)
 		return (FALSE);
 	return (cmd_null_terminate_args (out));

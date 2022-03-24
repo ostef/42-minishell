@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/23 19:14:01 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/24 14:42:10 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 			if (cmd->prev)
 			{	
 				if (cmd->redir_first)
-				{
-					dprintf(1, "here");
 					ft_redir(sh, cmd);
-				}
 				else
 					dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 			}
