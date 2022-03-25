@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/24 13:27:14 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 18:43:49 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,14 @@ typedef struct s_redir
 	t_str			filename;
 	struct s_redir	*prev;
 	struct s_redir	*next;
+	
 }	t_redir;
+
+typedef struct s_heredoc
+{
+	t_str				here_line;
+	struct s_heredoc	*next;
+}	t_heredoc;
 
 typedef struct s_cmd
 {
@@ -98,6 +105,9 @@ typedef struct s_cmd
 	t_redir			*redir_first;
 	t_redir			*redir_link;
 	t_redir			*redir_last;
+	t_heredoc		*heredoc_link;
+	t_file			fd_in;
+	t_file			fd_out;
 	pid_t			pid;
 	t_file			pipe[2];
 	t_int			builtin_exit_status;

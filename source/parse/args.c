@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:04:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 16:01:29 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 16:37:11 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_bool	cmd_null_terminate_args(t_cmd *cmd)
 {
+	if (!cmd->args)
+		return (TRUE);
 	if (cmd->args_count == cmd->args_cap)
 	{
 		cmd->args = ft_realloc (cmd->args, cmd->args_cap * sizeof(t_str),

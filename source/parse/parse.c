@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/24 15:51:09 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 16:36:48 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		if (token->kind == TK_DELIMITED && token->delim == '|')
 			break ;
 	}
-	//if (out->redir_first-> kind == RD_OUT_APPEND || out->redir_first-> kind == RD_OUT)
-	//	return (TRUE);
-	if (out->args_count == 0)
+	if (out->args_count == 0 && !out->redir_first)
 		return (FALSE);
 	return (cmd_null_terminate_args (out));
 }

@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/24 14:42:10 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 20:26:38 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 	t_cstr	full_path;
 	t_err	err;
 
-	if (cmd->next)
-		pipe (cmd->pipe);
 	if (cmd_is_builtin (cmd))
 		cmd->builtin_exit_status = cmd_exec_builtin (sh, cmd);
 	else
@@ -83,20 +81,14 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		if (cmd->pid == 0)
 		{
 			err = cmd_find_path (sh, cmd->args[0], &full_path);
-			if (cmd->next || cmd->redir_first)
-			{
-				if (cmd->redir_first)
-					ft_redir(sh, cmd);
-				else
-					dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
-			}
-			if (cmd->prev)
-			{	
-				if (cmd->redir_first)
-					ft_redir(sh, cmd);
-				else
-					dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
-			}
+			if (cmd->fd_out)
+				dup2 (cmd->fd_out, STDOUT);
+			else if (cmd->next)
+				dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
+			if (cmd->fd_in)
+				dup2 (cmd->fd_in, STDIN);
+			else if (cmd->prev)
+				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 			cmd_close_prev_pipes (cmd);
 			cmd_handle_error (cmd, err);
 			if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
@@ -110,6 +102,13 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	t_int	status;
 	t_cmd	*cmd;
 
+	cmd = line->first;
+	while (cmd)
+	{
+		pipe (cmd->pipe);
+		ft_redir(sh, cmd);
+		cmd = cmd->next;
+	}
 	status = 0;
 	cmd = line->first;
 	while (cmd)
