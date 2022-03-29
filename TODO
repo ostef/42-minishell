@@ -12,8 +12,6 @@ Stefan:
 * Shell arguments
 * Handle parsing errors with redirections (< < for example)
 * Handle 0 ENV variables
-Fallback env variables:
-* PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 * Try to export vars like SHLVL, PWD, OLDPWD, HOME
 * Ensure output is written at the right place
