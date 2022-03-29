@@ -23,6 +23,10 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+# define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define PIPE_READ 0
+# define PIPE_WRITE 1
+
 typedef enum e_err
 {
 	OK = 0,
@@ -40,9 +44,6 @@ typedef struct s_env
 	struct s_env	*prev;
 	struct s_env	*next;
 }	t_env;
-
-# define PIPE_READ 0
-# define PIPE_WRITE 1
 
 /*
  * flat_args: All the command arguments in a flat array, separated by \0s.

@@ -93,7 +93,9 @@ t_cstr	env_get(t_shell *sh, t_cstr name)
 	t_env	*env;
 
 	env = env_get_node (sh, name);
-	if ((!env) || (!env->name) || (!env->val))
+	if (!env && ft_strequ (name, "PATH"))
+		return (DEFAULT_PATH);
+	if (!env || !env->val)
 		return ("");
 	return (env->val);
 }
