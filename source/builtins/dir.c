@@ -12,15 +12,42 @@
 
 #include "minishell.h"
 
-static t_bool	check_dir(t_cstr dir)
+static t_cstr	parse_dir(t_shell *sh, t_cstr dir)
+{
+	if (ft_strequ (dir, "-"))
+	{
+		if (!env_get_node (sh, "OLDPWD"))
+		{
+			eprint ("cd: OLDPWD not set");
+			return (NULL);
+		}
+		dir = env_get (sh, "OLDPWD");
+	}
+	else if (ft_strequ (dir, "--"))
+	{
+		if (!env_get_node (sh, "HOME"))
+		{
+			eprint ("cd: HOME not set");
+			return (NULL);
+		}
+		dir = env_get (sh, "HOME");
+	}
+	return (dir);
+}
+
+static t_bool	check_dir(t_shell *sh, t_cstr dir)
 {
 	struct stat	stat_res;
 
 	if (access (dir, F_OK) != 0 || stat (dir, &stat_res) != 0)
+	{
+		eprint ("cd: %s: %m", dir);
 		return (FALSE);
+	}
 	if (!S_ISDIR (stat_res.st_mode))
 	{
 		errno = ENOTDIR;
+		eprint ("cd: %s: %m", dir);
 		return (FALSE);
 	}
 	return (TRUE);
@@ -33,12 +60,9 @@ t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
 
 	if (cmd->args_count < 2)
 		return (0);
-	new_dir = cmd->args[1];
-	if (!check_dir (new_dir))
-	{
-		eprint ("cd: %s: %m", new_dir);
+	new_dir = parse_dir (sh, cmd->args[1]);
+	if (!new_dir || !check_dir (sh, new_dir))
 		return (1);
-	}
 	if (cmd->prev || cmd->next)
 		return (0);
 	if (chdir (new_dir) == -1)
