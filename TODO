@@ -1,6 +1,5 @@
 Ana:
 * History
-* Variable expansion ($ sign) Done
 * Redirections
 * Signals
 * Builtins:
@@ -16,7 +15,6 @@ Stefan:
 * Ensure output is written at the right place
 * Norminette!!
 * Handle exit status on parsing error
-* Nice prompt
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)
