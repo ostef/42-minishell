@@ -20,7 +20,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
 	$(CC) $(C_FLAGS) -c $< -o $@
 
 $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
-	$(CC) $(C_FLAGS) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))  -o $(NAME)
+	$(CC) $(C_FLAGS) $(addprefix $(OBJ_DIR)/, $(OBJ_FILES)) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) -o $(NAME)
 
 libft:
 	@make -C libft
