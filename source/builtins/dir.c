@@ -12,14 +12,35 @@
 
 #include "minishell.h"
 
+static t_bool	check_dir(t_cstr dir)
+{
+	struct stat	stat_res;
+
+	if (access (dir, F_OK) != 0 || stat (dir, &stat_res) != 0)
+		return (FALSE);
+	if (!S_ISDIR (stat_res.st_mode))
+	{
+		errno = ENOTDIR;
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
 {
 	char	cwd_buff[PATH_MAX];
 	t_cstr	new_dir;
 
-	if (cmd->args_count < 2 || cmd->prev || cmd->next)
+	if (cmd->args_count < 2)
 		return (0);
 	new_dir = cmd->args[1];
+	if (!check_dir (new_dir))
+	{
+		eprint ("cd: %s: %m", new_dir);
+		return (1);
+	}
+	if (cmd->prev || cmd->next)
+		return (0);
 	if (chdir (new_dir) == -1)
 	{
 		eprint ("cd: %s: %m", new_dir);
