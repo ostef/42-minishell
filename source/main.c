@@ -51,7 +51,6 @@ static void	env_free(t_shell *sh)
 
 static t_str	show_prompt(t_shell *sh)
 {
-	t_str	result;
 	t_cstr	prompt;
 	t_int	i;
 
