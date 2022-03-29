@@ -12,10 +12,12 @@
 
 #include "minishell.h"
 
-static void	parse_envp(t_shell *sh, t_str *envp)
+static void	env_init(t_shell *sh, t_str *envp)
 {
 	t_env	env;
 	t_int	i;
+	char	cwd[PATH_MAX];
+	t_int	shlvl;
 
 	i = 0;
 	while (envp[i])
@@ -25,6 +27,11 @@ static void	parse_envp(t_shell *sh, t_str *envp)
 			env_set(sh, env.name, env.val);
 		i++;
 	}
+	getcwd (cwd, PATH_MAX);
+	env_set (sh, "PWD", cwd);
+	env_set (sh, "OLDPWD", NULL);
+	ft_str_to_int (env_get (sh, "SHLVL"), &shlvl);
+	env_set (sh, "SHLVL", ft_fmt (ft_temp (), "%i", shlvl + 1));
 }
 
 static void	env_free(t_shell *sh)
@@ -79,7 +86,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	(void)av;
 	ft_init_temp_storage ();
 	ft_memset (&sh, 0, sizeof (t_shell));
-	parse_envp (&sh, envp);
+	env_init (&sh, envp);
 	while (!sh.should_exit)
 	{
 		ft_reset_temp_storage ();

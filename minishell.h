@@ -158,8 +158,7 @@ t_bool	env_parse(t_cstr str, t_env *env);
 t_env	*env_get_node(t_shell *sh, t_cstr name);
 /*
  * Retrieve the environment variable named `name` inside the sh->env list.
- * Returns the value of the variable, or NULL if it does not exist or the
- * variable has no value assigned to it.
+ * Returns the value of the variable, or "" if the variable does not exist.
  */
 t_cstr	env_get(t_shell *sh, t_cstr name);
 /*
