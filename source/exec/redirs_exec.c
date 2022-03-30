@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/25 20:48:13 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/25 20:51:08 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ t_bool	ft_redir_here(t_shell *shell, t_cmd *cmd)
 // heredoc>$PATH
 // heredoc>$'PATH'
 // Faire une condition specifique pour ce cas
-
 
 t_bool	ft_redir(t_shell *shell, t_cmd *cmd)
 {

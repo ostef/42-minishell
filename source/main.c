@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/23 15:56:23 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 18:56:30 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,22 @@ static t_str	show_prompt(t_shell *sh)
 	return readline (prompt);
 }
 
+
+
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;
 	t_str		input;
 	t_cmd_line	cmd_line;
-
+	struct termios old_termios;
+	struct termios new_termios;
+	
+	tcgetattr(0, &old_termios);
+	new_termios = old_termios;
+	new_termios.c_lflag &= ~ECHOCTL;
+	// new_termios.c_oflag |= ONOEOT;
+	tcsetattr(0, TCSANOW, &new_termios);
+	sig_handler();
 	(void)ac;
 	(void)av;
 	ft_init_temp_storage ();
@@ -91,12 +101,17 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 		ft_reset_temp_storage ();
 		input = show_prompt(&sh);
 		if (!input)
+		{
+			write(2, "exit\n", 5);
 			break ;
+		}
+		add_history(input);
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
 		free (input);
 	}
 	env_free (&sh);
+	tcsetattr(0, TCSANOW, &old_termios);
 	return (0);
 }
