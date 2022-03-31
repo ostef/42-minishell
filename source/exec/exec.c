@@ -12,14 +12,18 @@
 
 #include "exec.h"
 
-static void	cmd_close_prev_pipes(t_cmd *cmd)
+static void	cmd_close_files_up_to(t_cmd *cmd)
 {
 	while (cmd)
 	{
-		if (cmd->pipe[PIPE_READ])
+		if (cmd->pipe[PIPE_READ] > STDERR)
 			close (cmd->pipe[PIPE_READ]);
-		if (cmd->pipe[PIPE_WRITE])
+		if (cmd->pipe[PIPE_WRITE] > STDERR)
 			close (cmd->pipe[PIPE_WRITE]);
+		if (cmd->fd_in > STDERR)
+			close (cmd->fd_in);
+		if (cmd->fd_out > STDERR)
+			close (cmd->fd_out);
 		cmd = cmd->prev;
 	}
 }
@@ -89,10 +93,11 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 				dup2 (cmd->fd_in, STDIN);
 			else if (cmd->prev)
 				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
-			cmd_close_prev_pipes (cmd);
+			cmd_close_files_up_to (cmd);
 			cmd_handle_error (cmd, err);
-			if (execve (full_path, cmd->args, env_list_to_array (sh)) == -1)
-				exit (errno);
+			if (!cmd->has_errors)
+				execve (full_path, cmd->args, env_list_to_array (sh));
+			exit (1);
 		}
 	}
 }
@@ -105,24 +110,30 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	cmd = line->first;
 	while (cmd)
 	{
-		pipe (cmd->pipe);
-		ft_redir(sh, cmd);
+		if (pipe (cmd->pipe) == -1)
+		{
+			eprint ("%m");
+			cmd->has_errors = TRUE;
+		}
+		if (!redir_open(sh, cmd))
+			cmd->has_errors = TRUE;
 		cmd = cmd->next;
 	}
 	status = 0;
 	cmd = line->first;
 	while (cmd)
 	{
-		cmd_exec (sh, cmd);
+		if (cmd->args_count > 0)
+			cmd_exec (sh, cmd);
 		cmd = cmd->next;
 	}
-	cmd_close_prev_pipes (line->last);
+	cmd_close_files_up_to (line->last);
 	cmd = line->first;
 	while (cmd)
 	{
 		if (cmd_is_builtin (cmd))
 			status = cmd->builtin_exit_status;
-		else
+		else if (cmd->args_count > 0)
 		{
 			waitpid (cmd->pid, &status, 0);
 			status = WEXITSTATUS (status);
