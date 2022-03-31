@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/25 18:43:49 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/30 19:11:43 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "libft.h"
+# include <stdio.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
@@ -192,5 +194,11 @@ t_int	builtin_echo(t_shell *sh, t_cmd *cmd);
 t_int	builtin_cd(t_shell *sh, t_cmd *cmd);
 t_int	builtin_pwd(t_shell *sh, t_cmd *cmd);
 t_int	builtin_exit(t_shell *sh, t_cmd *cmd);
+
+/* Signals */
+
+void	silence(int signo);
+void	sig_handler(void);
+void	sig_nl(void);
 
 #endif
