@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 17:09:28 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 17:47:32 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
 			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |'\"");
-		if (!token)
+		if (!token && redir_kind)
+			return (FALSE);
+		else if (!token)
 			break ;
 		if (token->len > 0)
 		{

@@ -10,7 +10,6 @@ Stefan:
 
 * ^C in heredoc
 * Try to export vars like SHLVL, PWD, OLDPWD, HOME
-* Ensure output is written at the right place
 * Norminette!!
 * Handle exit status on parsing error
 
