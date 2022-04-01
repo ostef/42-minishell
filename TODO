@@ -1,6 +1,4 @@
 Ana:
-* History OK option do a log file to have previous processus history
-* Redirections
 * Signals
 * Builtins:
 	- export
@@ -16,7 +14,12 @@ Stefan:
 * Ensure output is written at the right place
 * Norminette!!
 * Handle exit status on parsing error
-* Variable substitution in heredoc
+
+Maybe:
+* Log file so we can have the previous history
+* $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
+* Rewrite quoted string handling in parsing (a"hello" should give ahello, not a hello!) ?
+* Write line number in errors when we are not in a tty (see bash 2>err 1>out)
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)
