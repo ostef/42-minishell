@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 17:49:26 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 17:56:20 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,6 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-typedef struct s_heredoc
-{
-	t_str				here_line;
-	struct s_heredoc	*next;
-}	t_heredoc;
-
 typedef struct s_cmd
 {
 	t_str			flat_args;
@@ -111,7 +105,6 @@ typedef struct s_cmd
 	t_s64			args_cap;
 	t_redir			*redir_first;
 	t_redir			*redir_last;
-	t_heredoc		*heredoc_link;
 	t_file			fd_in;
 	t_file			fd_out;
 	t_bool			has_errors;
