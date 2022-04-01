@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/25 16:36:48 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 16:58:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		redir_kind = cmd_parse_redir_symbol(lexer);
 		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
-			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |");
+			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |'\"");
 		if (!token)
 			break ;
 		if (token->len > 0)
