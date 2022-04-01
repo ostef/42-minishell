@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/31 17:01:45 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 16:26:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ typedef struct s_cmd
 	t_s64			args_count;
 	t_s64			args_cap;
 	t_redir			*redir_first;
-	t_redir			*redir_link;
 	t_redir			*redir_last;
 	t_heredoc		*heredoc_link;
 	t_file			fd_in;
@@ -179,12 +178,8 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  */
 t_bool	env_remove(t_shell *sh, t_cstr name);
 
-/* Command line parsing */
-
+t_str	expand_variables(t_shell *sh, t_cstr str, t_int len);
 t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
-
-/* Execution */
-
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
 
