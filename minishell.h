@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/31 17:01:45 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 18:00:45 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,8 @@ void	int_handler(int signo);
 void	sig_handler(void);
 void	sig_nl(void);
 void	silence(int signo);
+void	put_nl(int signo);
+void	quit_3(int signo);
 
 void	rl_replace_line(const char *text, int clearundo);
 

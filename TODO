@@ -1,7 +1,9 @@
 Ana:
 * History OK option do a log file to have previous processus history
+	- afficher path
 * Redirections
-* Signals
+* Signals 
+	- Heredoc segfault
 * Builtins:
 	- export
 	- unset
