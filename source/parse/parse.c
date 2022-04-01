@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/25 16:36:48 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 17:47:32 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,14 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 	{
 		ft_lexer_skip_spaces(lexer);
 		redir_kind = cmd_parse_redir_symbol(lexer);
+		if (lexer->curr < lexer->end && (*lexer->curr == '<' || *lexer->curr == '>'))
+			return (FALSE);
 		token = ft_lexer_skip_quoted_str(lexer);
 		if (!token)
-			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |");
-		if (!token)
+			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |'\"");
+		if (!token && redir_kind)
+			return (FALSE);
+		else if (!token)
 			break ;
 		if (token->len > 0)
 		{
@@ -81,7 +85,10 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 			return (FALSE);
 		if (!cmd_parse (sh, &lexer, cmd))
 		{
-			eprint ("syntax error near unexpected token `%c'", *lexer.curr);
+			if (lexer.curr >= lexer.end)
+				eprint ("syntax error near unexpected token `newline'");
+			else
+				eprint ("syntax error near unexpected token `%c'", *lexer.curr);
 			sh->last_exit_status = 258;
 			return (FALSE);
 		}

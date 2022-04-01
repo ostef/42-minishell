@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 18:00:45 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 18:32:05 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,7 @@ typedef struct s_redir
 	t_str			filename;
 	struct s_redir	*prev;
 	struct s_redir	*next;
-	
 }	t_redir;
-
-typedef struct s_heredoc
-{
-	t_str				here_line;
-	struct s_heredoc	*next;
-}	t_heredoc;
 
 typedef struct s_cmd
 {
@@ -111,9 +104,7 @@ typedef struct s_cmd
 	t_s64			args_count;
 	t_s64			args_cap;
 	t_redir			*redir_first;
-	t_redir			*redir_link;
 	t_redir			*redir_last;
-	t_heredoc		*heredoc_link;
 	t_file			fd_in;
 	t_file			fd_out;
 	t_bool			has_errors;
@@ -179,12 +170,8 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val);
  */
 t_bool	env_remove(t_shell *sh, t_cstr name);
 
-/* Command line parsing */
-
+t_str	expand_variables(t_shell *sh, t_cstr str, t_int len);
 t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line);
-
-/* Execution */
-
 /* Returns the exit code of the last command */
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line);
 

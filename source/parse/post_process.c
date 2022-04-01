@@ -6,13 +6,13 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:07:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 15:55:44 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 16:33:00 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static t_str	expand_variables(t_shell *sh, t_cstr str, t_int len)
+t_str	expand_variables(t_shell *sh, t_cstr str, t_int len)
 {
 	t_lexer	lexer;
 	t_token	*token;
