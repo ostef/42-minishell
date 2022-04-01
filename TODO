@@ -15,6 +15,7 @@ Stefan:
 * Ensure output is written at the right place
 * Norminette!!
 * Handle exit status on parsing error
+* Variable substitution in heredoc
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)

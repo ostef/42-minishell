@@ -116,6 +116,7 @@ typedef struct s_cmd
 	t_heredoc		*heredoc_link;
 	t_file			fd_in;
 	t_file			fd_out;
+	t_bool			has_errors;
 	pid_t			pid;
 	t_file			pipe[2];
 	t_int			builtin_exit_status;

@@ -59,6 +59,8 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 
 t_bool	cmd_is_builtin(t_cmd *cmd)
 {
+	if (cmd->args_count == 0)
+		return (FALSE);
 	return (ft_strequ (cmd->args[0], "echo")
 		|| ft_strequ (cmd->args[0], "cd")
 		|| ft_strequ (cmd->args[0], "pwd")
