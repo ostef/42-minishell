@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 18:27:34 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:03:06 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,36 +75,37 @@ static t_cstr	get_prompt(t_shell *sh)
 	return (prompt);
 }
 
+void	set_termios(t_shell *sh)
+{
+	tcgetattr(0, &sh->old_termios);
+	sh->new_termios = sh->old_termios;
+	sh->new_termios.c_lflag &= ~ECHOCTL;
+}
+
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;
 	t_str		input;
 	t_cmd_line	cmd_line;
-	struct termios old_termios;
-	struct termios new_termios;
-	
-	
-	tcgetattr(0, &old_termios);
-	new_termios = old_termios;
-	new_termios.c_lflag &= ~ECHOCTL;
-	
 	
 	(void)ac;
 	(void)av;
 	ft_init_temp_storage ();
 	ft_memset (&sh, 0, sizeof (t_shell));
+	set_termios(&sh);
 	env_init (&sh, envp);
 	while (!sh.should_exit)
 	{
-		tcsetattr(0, TCSANOW, &new_termios);
+		tcsetattr(0, TCSANOW, &sh.new_termios);
 		sig_handler();
 		ft_reset_temp_storage ();
 		signal(SIGINT, int_handler);
+		ft_print ("\033[s");
 		input = readline (get_prompt(&sh));
 		signal(SIGINT, silence);
 		if (!input)
 		{
-			ft_println ("%sexit", get_prompt (&sh));
+			ft_println ("\033[u%sexit", get_prompt (&sh));
 			break ;
 		}
 		else
@@ -112,14 +113,12 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
 		{
-			tcsetattr(0, TCSANOW, &old_termios);
-			signal(SIGINT, put_nl);
-			signal(SIGQUIT, quit_3);
+
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
 		}
 		free (input);
 	}
 	env_free (&sh);
-	tcsetattr(0, TCSANOW, &old_termios);
+	tcsetattr(0, TCSANOW, &sh.old_termios);
 	return (0);
 }

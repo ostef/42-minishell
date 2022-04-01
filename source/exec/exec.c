@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 17:01:46 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:01:23 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 			cmd->has_errors = TRUE;
 		cmd = cmd->next;
 	}
+	tcsetattr(0, TCSANOW, &sh->old_termios);
+	signal(SIGINT, put_nl);
+	signal(SIGQUIT, quit_3);
 	status = 0;
 	cmd = line->first;
 	while (cmd)

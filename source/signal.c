@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 18:52:05 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 18:22:49 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 18:51:12 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	int_handler(int signo)
 {
-	write(1, "\n", 1);
-	rl_on_new_line(); // Regenerate the prompt on a newline
+	ft_print ("\n");	rl_on_new_line(); // Regenerate the prompt on a newline
+	ft_print ("\033[s");
 	rl_replace_line("", 0); // Clear the previous text
 	rl_redisplay();
 }

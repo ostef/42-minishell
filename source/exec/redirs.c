@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 16:41:18 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 18:43:27 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 		close (cmd->fd_in);
 	cmd->fd_in = here_pipe[PIPE_READ];
 	delim = "";
-	while (!ft_strequ(delim, redir->filename))
+	while (delim && !ft_strequ(delim, redir->filename))
 	{
 		delim = readline("> ");
-		if (!ft_strequ(delim, redir->filename))
+		if (delim && !ft_strequ(delim, redir->filename))
 			ft_fprintln (here_pipe[PIPE_WRITE],
 				expand_variables (sh, delim, ft_strlen (delim)));
 	}

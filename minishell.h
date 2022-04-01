@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 18:32:05 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 18:56:26 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ typedef struct s_shell
 	t_int	env_count;
 	t_int	last_exit_status;
 	t_bool	should_exit;
+	struct	termios old_termios;
+	struct	termios new_termios;
 }	t_shell;
 
 /* Error */
