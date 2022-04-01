@@ -11,6 +11,7 @@ Stefan:
 * Shell arguments
 * Handle parsing errors with redirections (< < for example)
 
+* ^C in heredoc
 * Try to export vars like SHLVL, PWD, OLDPWD, HOME
 * Ensure output is written at the right place
 * Norminette!!
