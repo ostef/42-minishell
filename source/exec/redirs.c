@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 16:34:31 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 16:41:18 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 	{
 		delim = readline("> ");
 		if (!ft_strequ(delim, redir->filename))
-			ft_fprintln (here_pipe[PIPE_WRITE], delim);
+			ft_fprintln (here_pipe[PIPE_WRITE],
+				expand_variables (sh, delim, ft_strlen (delim)));
 	}
 	close (here_pipe[PIPE_WRITE]);
 	return (TRUE);
