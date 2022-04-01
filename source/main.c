@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/30 18:56:30 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:51:37 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,15 +102,20 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 		input = show_prompt(&sh);
 		if (!input)
 		{
-			write(2, "exit\n", 5);
+			//write()
+			write(1, "\033\eexitm", 7);
+			//rl_replace_line("exit", 0);
+			//signal(SIGQUIT, silence);
 			break ;
 		}
-		add_history(input);
+		else
+			add_history(input);
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
 		free (input);
 	}
+	
 	env_free (&sh);
 	tcsetattr(0, TCSANOW, &old_termios);
 	return (0);

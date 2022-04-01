@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/30 19:11:43 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/03/31 17:01:45 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,8 +196,11 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd);
 
 /* Signals */
 
-void	silence(int signo);
+void	int_handler(int signo);
 void	sig_handler(void);
 void	sig_nl(void);
+void	silence(int signo);
+
+void	rl_replace_line(const char *text, int clearundo);
 
 #endif
