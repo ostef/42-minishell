@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 18:43:27 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:34:40 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 	delim = "";
 	while (delim && !ft_strequ(delim, redir->filename))
 	{
+		if (g_globals.exit_exec)
+		{
+			
+			break;
+		}
 		delim = readline("> ");
 		if (delim && !ft_strequ(delim, redir->filename))
 			ft_fprintln (here_pipe[PIPE_WRITE],
@@ -94,6 +99,8 @@ t_bool	redir_open(t_shell *shell, t_cmd *cmd)
 		{
 			if (!redir_here(shell, redir, cmd))
 				return (FALSE);
+			if (g_globals.exit_exec)
+				break;
 		}
 		redir = redir->next;
 	}

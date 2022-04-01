@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 19:01:23 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:34:47 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	t_int	status;
 	t_cmd	*cmd;
 
+	g_globals.exit_exec = FALSE;
+	signal(SIGINT, int_handler);
 	cmd = line->first;
 	while (cmd)
 	{
@@ -117,6 +119,8 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 		if (!redir_open(sh, cmd))
 			cmd->has_errors = TRUE;
 		cmd = cmd->next;
+		if (g_globals.exit_exec)
+			return (1);
 	}
 	tcsetattr(0, TCSANOW, &sh->old_termios);
 	signal(SIGINT, put_nl);

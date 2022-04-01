@@ -6,11 +6,13 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 19:03:06 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:18:26 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_globals	g_globals;
 
 static void	env_init(t_shell *sh, t_str *envp)
 {
@@ -112,10 +114,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 			add_history(input);
 		ft_memset (&cmd_line, 0, sizeof (t_cmd_line));
 		if (cmd_line_parse (&sh, input, &cmd_line))
-		{
-
 			sh.last_exit_status = cmd_line_exec (&sh, &cmd_line);
-		}
 		free (input);
 	}
 	env_free (&sh);

@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 18:56:26 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 19:25:11 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,13 @@ typedef struct s_shell
 	struct	termios old_termios;
 	struct	termios new_termios;
 }	t_shell;
+
+typedef struct s_globals
+{
+	t_bool	exit_exec;
+}	t_globals;
+
+extern t_globals	g_globals;
 
 /* Error */
 
