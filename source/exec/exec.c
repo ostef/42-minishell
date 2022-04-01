@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 16:36:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 17:01:46 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		cmd->pid = fork ();
 		if (cmd->pid == 0)
 		{
-			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			if (cmd->fd_out)
 				dup2 (cmd->fd_out, STDOUT);
 			else if (cmd->next)
@@ -94,9 +93,9 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 			else if (cmd->prev)
 				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 			cmd_close_files_up_to (cmd);
+			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			cmd_handle_error (cmd, err);
-			if (!cmd->has_errors)
-				execve (full_path, cmd->args, env_list_to_array (sh));
+			execve (full_path, cmd->args, env_list_to_array (sh));
 			exit (1);
 		}
 	}
@@ -123,7 +122,7 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	cmd = line->first;
 	while (cmd)
 	{
-		if (cmd->args_count > 0)
+		if (cmd->args_count > 0 && !cmd->has_errors)
 			cmd_exec (sh, cmd);
 		cmd = cmd->next;
 	}
