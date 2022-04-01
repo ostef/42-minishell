@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 16:26:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 17:49:26 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ typedef struct s_redir
 	t_str			filename;
 	struct s_redir	*prev;
 	struct s_redir	*next;
-	
 }	t_redir;
 
 typedef struct s_heredoc
