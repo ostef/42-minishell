@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/30 16:33:57 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 16:36:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,9 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	cmd = line->first;
 	while (cmd)
 	{
-		if (cmd_is_builtin (cmd))
+		if (cmd->has_errors)
+			status = 1;
+		else if (cmd_is_builtin (cmd))
 			status = cmd->builtin_exit_status;
 		else if (cmd->args_count > 0)
 		{
