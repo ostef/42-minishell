@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 19:25:11 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 18:22:28 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-# define DEFAULT_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define DEF_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PIPE_READ 0
 # define PIPE_WRITE 1
 
@@ -124,18 +124,19 @@ typedef struct s_cmd_line
 
 typedef struct s_shell
 {
-	t_env	*env_first;
-	t_env	*env_last;
-	t_int	env_count;
-	t_int	last_exit_status;
-	t_bool	should_exit;
-	struct	termios old_termios;
-	struct	termios new_termios;
+	t_env			*env_first;
+	t_env			*env_last;
+	t_int			env_count;
+	t_int			last_exit_status;
+	t_bool			should_exit;
+	struct termios	old_termios;
+	struct termios	new_termios;
 }	t_shell;
 
 typedef struct s_globals
 {
 	t_bool	exit_exec;
+	t_file	saved_stdin;
 }	t_globals;
 
 extern t_globals	g_globals;
@@ -194,6 +195,7 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd);
 /* Signals */
 
 void	int_handler(int signo);
+void	exec_int_handler(int signo);
 void	sig_handler(void);
 void	sig_nl(void);
 void	silence(int signo);

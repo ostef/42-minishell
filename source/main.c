@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/01 19:18:26 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/03 20:31:41 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 		tcsetattr(0, TCSANOW, &sh.new_termios);
 		sig_handler();
 		ft_reset_temp_storage ();
-		signal(SIGINT, int_handler);
 		ft_print ("\033[s");
 		input = readline (get_prompt(&sh));
-		signal(SIGINT, silence);
 		if (!input)
 		{
 			ft_println ("\033[u%sexit", get_prompt (&sh));
