@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 18:22:28 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 21:02:59 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,13 @@ typedef struct s_globals
 
 extern t_globals	g_globals;
 
-/* Error */
-
 void	eprint(t_cstr fmt_str, ...);
+void	shell_loop(t_shell *sh);
 
 /* Environment variables */
 
+void	env_init(t_shell *sh, t_str *envp);
+void	env_free(t_shell *sh);
 /*
  * Parse one environment variable line, in the form A=B
  * Puts the result in `env`
@@ -194,13 +195,12 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd);
 
 /* Signals */
 
-void	int_handler(int signo);
-void	exec_int_handler(int signo);
+void	default_signal_handler(int signo);
+void	pre_exec_sigint_handler(int signo);
+void	exec_signal_handler(int signo);
 void	sig_handler(void);
 void	sig_nl(void);
-void	silence(int signo);
 void	put_nl(int signo);
-void	quit_3(int signo);
 
 void	rl_replace_line(const char *text, int clearundo);
 

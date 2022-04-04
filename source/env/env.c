@@ -5,72 +5,47 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/04 18:22:38 by soumanso         ###   ########lyon.fr   */
+/*   Created: 2022/04/04 18:49:39 by soumanso          #+#    #+#             */
+/*   Updated: 2022/04/04 18:52:24 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	env_parse(t_cstr str, t_env *env)
+static void	env_add_node(t_shell *sh, t_env *node)
 {
-	t_lexer	lexer;
-	t_token	*token;
-
-	ft_lexer_init(&lexer, str, ft_temp());
-	while (lexer.curr < lexer.end)
+	if (sh->env_last)
 	{
-		token = ft_lexer_skip_identifier(&lexer);
-		if (!token)
-			return (FALSE);
-		env->name = ft_strndup(token->str, token->len, ft_temp());
-		if (!env->name)
-			return (FALSE);
-		if (!ft_lexer_skip_char(&lexer, '='))
-		{
-			if (lexer.curr < lexer.end)
-				return (FALSE);
-			return (TRUE);
-		}
-		token = ft_lexer_skip_delim (&lexer, "\0");
-		if (!token)
-			return (FALSE);
-		env->val = ft_strndup(token->str, token->len, ft_temp());
-		if (!env->val)
-			return (FALSE);
+		sh->env_last->next = node;
+		node->prev = sh->env_last;
 	}
-	return (TRUE);
+	else
+		sh->env_first = node;
+	sh->env_last = node;
+	sh->env_count += 1;
 }
 
 t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 {
-	t_env	*env_new;
+	t_env	*node;
 
-	env_new = env_get_node (sh, name);
-	if (env_new)
+	node = env_get_node (sh, name);
+	if (node)
 	{
 		if (val)
 		{
-			ft_free (env_new->val, ft_heap ());
-			env_new->val = ft_strdup (val, ft_heap ());
+			ft_free (node->val, ft_heap ());
+			node->val = ft_strdup (val, ft_heap ());
 		}
 		return (TRUE);
 	}
-	env_new = ft_zalloc(sizeof(t_env), ft_heap());
-	if (!env_new)
+	node = (t_env *)ft_zalloc(sizeof(t_env), ft_heap());
+	if (!node)
 		return (FALSE);
-	env_new->name = ft_strdup (name, ft_heap ());
+	node->name = ft_strdup (name, ft_heap ());
 	if (val)
-		env_new->val = ft_strdup (val, ft_heap ());
-	if (sh->env_last)
-	{
-		sh->env_last->next = env_new;
-		env_new->prev = sh->env_last;
-	}
-	else
-		sh->env_first = env_new;
-	sh->env_last = env_new;
-	sh->env_count += 1;
+		node->val = ft_strdup (val, ft_heap ());
+	env_add_node (sh, node);
 	return (FALSE);
 }
 

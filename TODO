@@ -1,23 +1,21 @@
 Ana:
-* Signals
 * Builtins:
 	- export
 	- unset
 	- env
 
 Stefan:
-* Shell arguments
+* Norminette
+* Compile with flags
 
-* ^C in heredoc
-* Try to export vars like SHLVL, PWD, OLDPWD, HOME
-* Norminette!!
+* Handle errors on env parsing
 * Handle exit status on parsing error
 
 Maybe:
+* Shell arguments
 * Log file so we can have the previous history
 * $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
 * Rewrite quoted string handling in parsing (a"hello" should give ahello, not a hello!) ?
-* Write line number in errors when we are not in a tty (see bash 2>err 1>out)
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)

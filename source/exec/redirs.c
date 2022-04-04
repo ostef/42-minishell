@@ -6,20 +6,22 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/03 20:42:49 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 20:15:29 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static t_bool	redir_out(t_shell *shell, t_redir *redir, t_cmd *cmd)
+static t_bool	redir_out(t_redir *redir, t_cmd *cmd)
 {
 	if (cmd->fd_out)
 		close(cmd->fd_out);
 	if (redir->kind == RD_OUT_APPEND)
-		cmd->fd_out = open(redir->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+		cmd->fd_out = open(redir->filename,
+				O_WRONLY | O_CREAT | O_APPEND, 0666);
 	else
-		cmd->fd_out = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+		cmd->fd_out = open(redir->filename,
+				O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (cmd->fd_out < 0)
 	{
 		eprint ("%s: %m", redir->filename);
@@ -28,7 +30,7 @@ static t_bool	redir_out(t_shell *shell, t_redir *redir, t_cmd *cmd)
 	return (TRUE);
 }
 
-static t_bool	redir_in(t_shell *shell, t_redir *redir, t_cmd *cmd)
+static t_bool	redir_in(t_redir *redir, t_cmd *cmd)
 {
 	if (cmd->fd_in)
 		close(cmd->fd_in);
@@ -44,7 +46,6 @@ static t_bool	redir_in(t_shell *shell, t_redir *redir, t_cmd *cmd)
 static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 {
 	t_file	here_pipe[2];
-	t_redir	*temp;
 	t_str	delim;
 
 	if (pipe (here_pipe) == -1)
@@ -68,12 +69,6 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 	return (TRUE);
 }
 
-// penser au cas 
-//<< EOF
-// heredoc>$PATH
-// heredoc>$'PATH'
-// Faire une condition specifique pour ce cas
-
 t_bool	redir_open(t_shell *shell, t_cmd *cmd)
 {
 	t_redir	*redir;
@@ -83,12 +78,12 @@ t_bool	redir_open(t_shell *shell, t_cmd *cmd)
 	{
 		if (redir->kind == RD_OUT || redir->kind == RD_OUT_APPEND)
 		{
-			if (!redir_out(shell, redir, cmd))
+			if (!redir_out(redir, cmd))
 				return (FALSE);
 		}
 		else if (redir->kind == RD_IN)
 		{
-			if (!redir_in(shell, redir, cmd))
+			if (!redir_in(redir, cmd))
 				return (FALSE);
 		}
 		else if (redir->kind == RD_IN_HERE)
@@ -97,7 +92,7 @@ t_bool	redir_open(t_shell *shell, t_cmd *cmd)
 				return (FALSE);
 		}
 		if (g_globals.exit_exec)
-			break;
+			break ;
 		redir = redir->next;
 	}
 	return (TRUE);

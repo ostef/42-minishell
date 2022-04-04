@@ -1,8 +1,9 @@
 NAME = minishell
 SRC_DIR = source
-SRC_FILES = main.c error.c env.c signal.c\
+SRC_FILES = main.c shell.c error.c signal.c\
+	env/env.c env/parse.c\
 	parse/parse.c parse/args.c parse/redirs_parse.c parse/post_process.c\
-	exec/exec.c exec/find.c exec/builtin.c exec/redirs.c\
+	exec/exec_line.c exec/exec_cmd.c exec/find.c exec/builtin.c exec/redirs.c\
 	builtins/dir.c builtins/shell.c
 RL_LIB = -L$(shell brew --prefix readline)/lib
 RL_INC = -I$(shell brew --prefix readline)/include
@@ -13,7 +14,7 @@ DEPENDENCIES = minishell.h libft/libft.a Makefile
 LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
-C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) #-fsanitize=address -g #-Wall -Wextra -Werror
+C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror #-fsanitize=address -g
 
 all: | libft $(NAME)
 

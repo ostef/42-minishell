@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:31:09 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/23 19:58:24 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 20:12:48 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_bool	cmd_is_builtin(t_cmd *cmd);
  * ERR_CMD_PERM is returned if `cmd_name` is a path, or ERR_CMD_NOT_FOUND if
  * the command name is not a path.
  */
+void	cmd_close_files_up_to(t_cmd *cmd);
 t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
 /*
  * Executes the command `cmd`. If the command cannot be executed (cmd_find_path

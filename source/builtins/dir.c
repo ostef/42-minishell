@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:02:40 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 16:04:52 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 20:16:25 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_cstr	parse_dir(t_shell *sh, t_cstr dir)
 	return (dir);
 }
 
-static t_bool	check_dir(t_shell *sh, t_cstr dir)
+static t_bool	check_dir(t_cstr dir)
 {
 	struct stat	stat_res;
 
@@ -61,7 +61,7 @@ t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	if (cmd->args_count < 2)
 		return (0);
 	new_dir = parse_dir (sh, cmd->args[1]);
-	if (!new_dir || !check_dir (sh, new_dir))
+	if (!new_dir || !check_dir (new_dir))
 		return (1);
 	if (cmd->prev || cmd->next)
 		return (0);
@@ -78,6 +78,7 @@ t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
 
 t_int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 {
+	(void)cmd;
 	ft_println (env_get (sh, "PWD"));
 	return (0);
 }

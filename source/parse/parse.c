@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 17:47:32 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 20:56:56 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,28 @@ static t_cmd	*cmd_add(t_cmd_line *line)
 	return (new);
 }
 
+static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
+	t_redir_kind redir, t_cmd *out)
+{
+	t_token	*token;
+
+	token = ft_lexer_skip_quoted_str(lexer);
+	if (!token)
+		token = ft_lexer_skip_delim (lexer, "\v\t\n\r <>|'\"");
+	if (!token)
+		return (NULL);
+	if (token->len > 0)
+	{
+		token->str = post_process_token(sh, token->str, token->len);
+		token->len = ft_strlen(token->str);
+		if (redir)
+			cmd_add_redir (out, redir, token);
+		else
+			cmd_add_arg (out, token);
+	}
+	return (token);
+}
+
 static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 {
 	t_token			*token;
@@ -45,25 +67,13 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 	{
 		ft_lexer_skip_spaces(lexer);
 		redir_kind = cmd_parse_redir_symbol(lexer);
-		if (lexer->curr < lexer->end && (*lexer->curr == '<' || *lexer->curr == '>'))
+		if (lexer->curr < lexer->end
+			&& (*lexer->curr == '<' || *lexer->curr == '>'))
 			return (FALSE);
-		token = ft_lexer_skip_quoted_str(lexer);
-		if (!token)
-			token = ft_lexer_skip_delim(lexer, "\v\t\n\r |'\"");
+		token = parse_word (sh, lexer, redir_kind, out);
 		if (!token && redir_kind)
 			return (FALSE);
-		else if (!token)
-			break ;
-		if (token->len > 0)
-		{
-			token->str = post_process_token(sh, token->str, token->len);
-			token->len = ft_strlen(token->str);
-			if (redir_kind)
-				cmd_add_redir (out, redir_kind, token);
-			else
-				cmd_add_arg (out, token);
-		}
-		if (token->kind == TK_DELIMITED && token->delim == '|')
+		if (!token || (token->kind == TK_DELIMITED && token->delim == '|'))
 			break ;
 	}
 	if (out->args_count == 0 && !out->redir_first)
@@ -92,7 +102,6 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 			sh->last_exit_status = 258;
 			return (FALSE);
 		}
-		ft_lexer_skip_char (&lexer, '|');
 		line->count += 1;
 	}
 	return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 16:09:37 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 20:16:39 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	t_bool	print_newline;
 	t_int	i;
 
+	(void)sh;
 	i = 1;
 	print_newline = TRUE;
 	if (cmd->args_count > 1 && ft_strequ(cmd->args[1], "-n"))
