@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/03/17 13:55:27 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/04 18:22:38 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_cstr	env_get(t_shell *sh, t_cstr name)
 
 	env = env_get_node (sh, name);
 	if (!env && ft_strequ (name, "PATH"))
-		return (DEFAULT_PATH);
+		return (DEF_PATH);
 	if (!env || !env->val)
 		return ("");
 	return (env->val);
