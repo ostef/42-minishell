@@ -102,6 +102,11 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 			sh->last_exit_status = 258;
 			return (FALSE);
 		}
+		if (ft_lexer_skip_char (&lexer, '|') && lexer.curr == lexer.end)
+		{
+			eprint ("syntax error near unexpected token `newline'");
+			return (FALSE);
+		}
 		line->count += 1;
 	}
 	return (TRUE);
