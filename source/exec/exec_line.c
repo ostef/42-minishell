@@ -15,9 +15,10 @@
 static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 {
 	t_cmd	*cmd;
+	t_file	saved_stdin;
 
-	g_globals.exit_exec = FALSE;
-	g_globals.saved_stdin = dup (STDIN);
+	saved_stdin = dup (STDIN);
+	sh->should_exit_exec = FALSE;
 	signal(SIGINT, pre_exec_sigint_handler);
 	cmd = line->first;
 	while (cmd)
@@ -29,15 +30,15 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 		}
 		if (!redir_open(sh, cmd))
 			cmd->has_errors = TRUE;
-		if (g_globals.exit_exec)
+		if (sh->should_exit_exec)
 		{
-			dup2 (g_globals.saved_stdin, STDIN);
+			dup2 (saved_stdin, STDIN);
 			return (FALSE);
 		}
 		cmd = cmd->next;
 	}
-	dup2 (g_globals.saved_stdin, STDIN);
-	close (g_globals.saved_stdin);
+	dup2 (saved_stdin, STDIN);
+	close (saved_stdin);
 	return (TRUE);
 }
 
@@ -66,15 +67,18 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 
 t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 {
-	t_int	status;
 	t_cmd	*cmd;
 
 	if (!pre_exec (sh, line))
-		return (1);
+	{
+		if (sh->should_exit_exec)
+			return (130);
+		else
+			return (1);
+	}
 	tcsetattr(0, TCSANOW, &sh->old_termios);
 	signal(SIGINT, exec_signal_handler);
 	signal(SIGQUIT, exec_signal_handler);
-	status = 0;
 	cmd = line->first;
 	while (cmd)
 	{

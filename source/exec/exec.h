@@ -39,6 +39,6 @@ t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
  */
 void	cmd_exec(t_shell *sh, t_cmd *cmd);
 t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
-t_bool	redir_open(t_shell *shell, t_cmd *cmd);
+t_bool	redir_open(t_shell *sh, t_cmd *cmd);
 
 #endif

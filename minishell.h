@@ -128,18 +128,11 @@ typedef struct s_shell
 	t_env			*env_last;
 	t_int			env_count;
 	t_int			last_exit_status;
+	t_bool			should_exit_exec;
 	t_bool			should_exit;
 	struct termios	old_termios;
 	struct termios	new_termios;
 }	t_shell;
-
-typedef struct s_globals
-{
-	t_bool	exit_exec;
-	t_file	saved_stdin;
-}	t_globals;
-
-extern t_globals	g_globals;
 
 void	eprint(t_cstr fmt_str, ...);
 void	shell_loop(t_shell *sh);

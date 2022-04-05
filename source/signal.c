@@ -34,7 +34,6 @@ void	pre_exec_sigint_handler(int signo)
 	if (signo == SIGINT)
 	{
 		close (STDIN);
-		g_globals.exit_exec = TRUE;
 		ft_print ("\n");
 	}
 }

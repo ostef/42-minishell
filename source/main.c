@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-t_globals	g_globals;
-
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
 	t_shell		sh;

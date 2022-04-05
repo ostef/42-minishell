@@ -64,12 +64,14 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 		free (delim);
 		delim = readline("> ");
 	}
+	if (!delim)
+		sh->should_exit_exec = TRUE;
 	free (delim);
 	close (here_pipe[PIPE_WRITE]);
 	return (TRUE);
 }
 
-t_bool	redir_open(t_shell *shell, t_cmd *cmd)
+t_bool	redir_open(t_shell *sh, t_cmd *cmd)
 {
 	t_redir	*redir;
 
@@ -88,10 +90,10 @@ t_bool	redir_open(t_shell *shell, t_cmd *cmd)
 		}
 		else if (redir->kind == RD_IN_HERE)
 		{
-			if (!redir_here(shell, redir, cmd))
+			if (!redir_here(sh, redir, cmd))
 				return (FALSE);
 		}
-		if (g_globals.exit_exec)
+		if (sh->should_exit_exec)
 			break ;
 		redir = redir->next;
 	}
