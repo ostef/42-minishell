@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:17:40 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/04 20:15:29 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 14:06:54 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ static t_bool	redir_here(t_shell *sh, t_redir *redir, t_cmd *cmd)
 		free (delim);
 		delim = readline("> ");
 	}
-	if (!delim)
-		sh->should_exit_exec = TRUE;
 	free (delim);
 	close (here_pipe[PIPE_WRITE]);
-	return (TRUE);
+	return (delim != NULL);
 }
 
 t_bool	redir_open(t_shell *sh, t_cmd *cmd)
@@ -93,8 +91,6 @@ t_bool	redir_open(t_shell *sh, t_cmd *cmd)
 			if (!redir_here(sh, redir, cmd))
 				return (FALSE);
 		}
-		if (sh->should_exit_exec)
-			break ;
 		redir = redir->next;
 	}
 	return (TRUE);

@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:31:12 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 14:06:08 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 	t_file	saved_stdin;
 
 	saved_stdin = dup (STDIN);
-	sh->should_exit_exec = FALSE;
 	signal(SIGINT, pre_exec_sigint_handler);
 	cmd = line->first;
 	while (cmd)
@@ -29,9 +28,8 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 			cmd->has_errors = TRUE;
 		}
 		if (!redir_open(sh, cmd))
-			cmd->has_errors = TRUE;
-		if (sh->should_exit_exec)
 		{
+			cmd->has_errors = TRUE;
 			dup2 (saved_stdin, STDIN);
 			return (FALSE);
 		}
@@ -62,6 +60,8 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 		}
 		cmd = cmd->next;
 	}
+	if (g_exit_status == EXIT_SIGINT)
+		return (g_exit_status);
 	return (status);
 }
 
@@ -70,12 +70,7 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	t_cmd	*cmd;
 
 	if (!pre_exec (sh, line))
-	{
-		if (sh->should_exit_exec)
-			return (EXIT_HEREDOC_INTERRUPTED);
-		else
-			return (EXIT_FAILURE);
-	}
+		return (EXIT_FAILURE);
 	tcsetattr(0, TCSANOW, &sh->old_termios);
 	signal(SIGINT, exec_signal_handler);
 	signal(SIGQUIT, exec_signal_handler);

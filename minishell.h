@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:39:20 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 14:04:56 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef enum e_err
 
 typedef enum e_exit_code
 {
-	EXIT_HEREDOC_INTERRUPTED = 1,
 	EXIT_CMD_NOT_EXECUTABLE = 126,
 	EXIT_CMD_NOT_FOUND = 127,
+	EXIT_SIGINT = 130,
 	EXIT_SYNTAX_ERROR = 258
 }	t_exit_code;
 
@@ -138,7 +138,6 @@ typedef struct s_shell
 	t_env			*env_first;
 	t_env			*env_last;
 	t_int			env_count;
-	t_bool			should_exit_exec;
 	t_bool			should_exit;
 	struct termios	old_termios;
 	struct termios	new_termios;
