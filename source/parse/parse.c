@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:37:14 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 15:37:38 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 				eprint ("syntax error near unexpected token `newline'");
 			else
 				eprint ("syntax error near unexpected token `%c'", *lexer.curr);
-			g_exit_status = EXIT_SYNTAX_ERROR;
+			g_globals.exit_status = EXIT_SYNTAX_ERROR;
 			return (FALSE);
 		}
 		if (ft_lexer_skip_char (&lexer, '|') && lexer.curr == lexer.end)

@@ -6,13 +6,13 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:39:07 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 15:52:37 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_int	g_exit_status;
+t_globals	g_globals;
 
 void	env_init(t_shell *sh, t_str *envp)
 {
@@ -70,11 +70,7 @@ t_cstr	get_prompt(t_shell *sh)
 		}
 		prompt += i;
 	}
-	if (g_exit_status == EXIT_SUCCESS)
-		prompt = ft_fmt (ft_temp (), "\033[0;1;32m%s$ \033[0m", prompt);
-	else
-		prompt = ft_fmt (ft_temp (), "\033[0;1;31m%s$ \033[0m", prompt);
-	return (prompt);
+	return (ft_fmt (ft_temp (), "\033[1m%s$ \033[0m", prompt));
 }
 
 void	shell_loop(t_shell *sh)
@@ -82,15 +78,15 @@ void	shell_loop(t_shell *sh)
 	t_str		input;
 	t_cmd_line	line;
 
+	ft_reset_temp_storage ();
 	tcsetattr(0, TCSANOW, &sh->new_termios);
+	g_globals.handled_signal = 0;
 	signal (SIGINT, default_signal_handler);
 	signal (SIGQUIT, default_signal_handler);
-	ft_reset_temp_storage ();
-	ft_print ("\033[s");
 	input = readline (get_prompt(sh));
 	if (!input)
 	{
-		ft_println ("\033[u%sexit", get_prompt (sh));
+		ft_println ("exit");
 		sh->should_exit = TRUE;
 		return ;
 	}
@@ -98,6 +94,6 @@ void	shell_loop(t_shell *sh)
 		add_history(input);
 	ft_memset (&line, 0, sizeof (t_cmd_line));
 	if (cmd_line_parse (sh, input, &line))
-		g_exit_status = cmd_line_exec (sh, &line);
+		g_globals.exit_status = cmd_line_exec (sh, &line);
 	free (input);
 }

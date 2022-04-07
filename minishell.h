@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/07 14:10:47 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 15:38:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,13 @@ typedef struct s_shell
 	struct termios	new_termios;
 }	t_shell;
 
-extern t_int	g_exit_status;
+typedef struct s_globals
+{
+	t_int	handled_signal;
+	t_int	exit_status;
+}	t_globals;
+
+extern t_globals	g_globals;
 
 void	eprint(t_cstr fmt_str, ...);
 void	shell_loop(t_shell *sh);

@@ -5,7 +5,6 @@ Ana:
 	- env
 
 Stefan:
-* Handle exit status on signal (interactive mode and execution mode)
 * Norminette
 * Compile with flags
 
