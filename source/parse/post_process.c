@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:07:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/01 16:33:00 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:35:27 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_str	expand_variables(t_shell *sh, t_cstr str, t_int len)
 		ft_lexer_skip_char(&lexer, '$');
 		token = ft_lexer_skip_char(&lexer, '?');
 		if (token)
-			result = ft_fmt(ft_temp(), "%s%d", result, sh->last_exit_status);
+			result = ft_fmt(ft_temp(), "%s%d", result, g_exit_status);
 		else
 		{
 			token = ft_lexer_skip_identifier(&lexer);

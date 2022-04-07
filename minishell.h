@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 21:02:59 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:39:20 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,23 @@
 typedef enum e_err
 {
 	OK = 0,
-	ERR_MEMORY = 1,
+	ERR_SYNTAX = 2,
 	ERR_CMD_IS_DIR = 126,
 	ERR_CMD_NO_SUCH_FILE = 127,
 	ERR_CMD_PERM = 128,
 	ERR_CMD_NOT_FOUND = 129,
+	ERR_FATAL_SIGNAL = 128,
+	ERR_HEREDOC_INTERRUPTED = 130,
+	ERR_MEMORY = 256,
 }	t_err;
+
+typedef enum e_exit_code
+{
+	EXIT_HEREDOC_INTERRUPTED = 1,
+	EXIT_CMD_NOT_EXECUTABLE = 126,
+	EXIT_CMD_NOT_FOUND = 127,
+	EXIT_SYNTAX_ERROR = 258
+}	t_exit_code;
 
 typedef struct s_env
 {
@@ -127,15 +138,17 @@ typedef struct s_shell
 	t_env			*env_first;
 	t_env			*env_last;
 	t_int			env_count;
-	t_int			last_exit_status;
 	t_bool			should_exit_exec;
 	t_bool			should_exit;
 	struct termios	old_termios;
 	struct termios	new_termios;
 }	t_shell;
 
+extern t_int	g_exit_status;
+
 void	eprint(t_cstr fmt_str, ...);
 void	shell_loop(t_shell *sh);
+t_cstr	get_prompt(t_shell *sh);
 
 /* Environment variables */
 

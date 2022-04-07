@@ -6,11 +6,13 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 21:05:16 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:39:07 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_int	g_exit_status;
 
 void	env_init(t_shell *sh, t_str *envp)
 {
@@ -49,7 +51,7 @@ void	env_free(t_shell *sh)
 	}
 }
 
-static t_cstr	get_prompt(t_shell *sh)
+t_cstr	get_prompt(t_shell *sh)
 {
 	t_cstr	prompt;
 	t_int	i;
@@ -68,7 +70,7 @@ static t_cstr	get_prompt(t_shell *sh)
 		}
 		prompt += i;
 	}
-	if (sh->last_exit_status == 0)
+	if (g_exit_status == EXIT_SUCCESS)
 		prompt = ft_fmt (ft_temp (), "\033[0;1;32m%s$ \033[0m", prompt);
 	else
 		prompt = ft_fmt (ft_temp (), "\033[0;1;31m%s$ \033[0m", prompt);
@@ -96,6 +98,6 @@ void	shell_loop(t_shell *sh)
 		add_history(input);
 	ft_memset (&line, 0, sizeof (t_cmd_line));
 	if (cmd_line_parse (sh, input, &line))
-		sh->last_exit_status = cmd_line_exec (sh, &line);
+		g_exit_status = cmd_line_exec (sh, &line);
 	free (input);
 }

@@ -13,12 +13,13 @@ Stefan:
 
 Error codes:
 * Failed to open redir file: 1
-* Syntax error: 2
+* Syntax error: 258
 * Command is not executable: 126
 * Command not found: 127
 * Fatal error of signal N: 128 + N
 	- Program segfaulted: 139
 * Script terminated by ^C: 130
+* ^C: 1
 
 Maybe:
 * Handle segfault signals

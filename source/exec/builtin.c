@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:34:11 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 20:13:21 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:32:33 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 	t_file	std_fds[3];
 	t_int	exit_status;
 
-	exit_status = 1;
+	exit_status = EXIT_FAILURE;
 	save_std_fds (std_fds);
 	if (cmd->next)
 		dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
@@ -47,11 +47,11 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 	else if (ft_strequ (cmd->args[0], "pwd"))
 		exit_status = builtin_pwd (sh, cmd);
 	else if (ft_strequ (cmd->args[0], "export"))
-		exit_status = 1;
+		exit_status = EXIT_FAILURE;
 	else if (ft_strequ (cmd->args[0], "unset"))
-		exit_status = 1;
+		exit_status = EXIT_FAILURE;
 	else if (ft_strequ (cmd->args[0], "env"))
-		exit_status = 1;
+		exit_status = EXIT_FAILURE;
 	else if (ft_strequ (cmd->args[0], "exit"))
 		exit_status = builtin_exit (sh, cmd);
 	restore_std_fds (std_fds);

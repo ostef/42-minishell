@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 20:11:35 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:31:12 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 	t_int	status;
 	t_cmd	*cmd;
 
-	status = 0;
+	status = EXIT_SUCCESS;
 	cmd = line->first;
 	while (cmd)
 	{
 		if (cmd->has_errors)
-			status = 1;
+			status = EXIT_FAILURE;
 		else if (cmd_is_builtin (cmd))
 			status = cmd->builtin_exit_status;
 		else if (cmd->args_count > 0)
@@ -72,9 +72,9 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	if (!pre_exec (sh, line))
 	{
 		if (sh->should_exit_exec)
-			return (130);
+			return (EXIT_HEREDOC_INTERRUPTED);
 		else
-			return (1);
+			return (EXIT_FAILURE);
 	}
 	tcsetattr(0, TCSANOW, &sh->old_termios);
 	signal(SIGINT, exec_signal_handler);

@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:09:51 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 20:12:30 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:31:28 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	cmd_handle_error(t_cmd *cmd, t_err err)
 	if (err == ERR_CMD_PERM)
 	{
 		eprint ("%s: Permission denied", cmd->args[0]);
-		exit (126);
+		exit (EXIT_CMD_NOT_EXECUTABLE);
 	}
 	else if (err != OK)
 	{
@@ -68,7 +68,7 @@ static void	cmd_handle_error(t_cmd *cmd, t_err err)
 			eprint ("%s: No such file or directory", cmd->args[0]);
 		else if (err == ERR_CMD_NOT_FOUND)
 			eprint ("%s: command not found", cmd->args[0]);
-		exit (127);
+		exit (EXIT_CMD_NOT_FOUND);
 	}
 }
 
@@ -96,7 +96,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			cmd_handle_error (cmd, err);
 			execve (full_path, cmd->args, env_list_to_array (sh));
-			exit (1);
+			exit (EXIT_FAILURE);
 		}
 	}
 }

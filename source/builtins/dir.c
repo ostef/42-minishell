@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:02:40 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 20:16:25 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 13:33:27 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,26 @@ t_int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	t_cstr	new_dir;
 
 	if (cmd->args_count < 2)
-		return (0);
+		return (EXIT_SUCCESS);
 	new_dir = parse_dir (sh, cmd->args[1]);
 	if (!new_dir || !check_dir (new_dir))
-		return (1);
+		return (EXIT_FAILURE);
 	if (cmd->prev || cmd->next)
-		return (0);
+		return (EXIT_SUCCESS);
 	if (chdir (new_dir) == -1)
 	{
 		eprint ("cd: %s: %m", new_dir);
-		return (1);
+		return (EXIT_FAILURE);
 	}
 	getcwd (cwd_buff, PATH_MAX);
 	env_set (sh, "OLDPWD", env_get (sh, "PWD"));
 	env_set (sh, "PWD", cwd_buff);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 t_int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 {
 	(void)cmd;
 	ft_println (env_get (sh, "PWD"));
-	return (0);
+	return (EXIT_SUCCESS);
 }
