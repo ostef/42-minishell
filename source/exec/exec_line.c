@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/07 14:06:08 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 14:11:10 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 		}
 		cmd = cmd->next;
 	}
-	if (g_exit_status == EXIT_SIGINT)
+	if (g_exit_status == EXIT_SIGINT || g_exit_status == EXIT_SIGQUIT)
 		return (g_exit_status);
 	return (status);
 }

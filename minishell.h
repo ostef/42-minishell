@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/07 14:04:56 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/07 14:10:47 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ typedef enum e_exit_code
 {
 	EXIT_CMD_NOT_EXECUTABLE = 126,
 	EXIT_CMD_NOT_FOUND = 127,
-	EXIT_SIGINT = 130,
+	EXIT_SIGNAL = 128,
+	EXIT_SIGINT = EXIT_SIGNAL + SIGINT,
+	EXIT_SIGQUIT = EXIT_SIGNAL + SIGQUIT,
 	EXIT_SYNTAX_ERROR = 258
 }	t_exit_code;
 
