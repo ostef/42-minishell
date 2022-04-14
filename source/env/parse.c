@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/04 20:11:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 19:15:33 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ t_bool	env_parse(t_cstr str, t_env *env)
 	while (lexer.curr < lexer.end)
 	{
 		if (!parse_ident (&lexer, env))
-			return (FALSE);
+			return (FALSE);// afficher le nom de lerreur
 		if (!ft_lexer_skip_char(&lexer, '='))
 			return (lexer.curr == lexer.end);
 		if (!parse_val (&lexer, env))
-			return (FALSE);
+			return (FALSE); // afficher le nom de lerreur
 	}
 	return (TRUE);
 }

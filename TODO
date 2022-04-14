@@ -3,13 +3,11 @@ Ana:
 	- export
 	- unset
 	- env
+* Handle errors on env parsing
 
 Stefan:
 * Norminette
 * Compile with flags
-
-* Handle errors on env parsing
-* Handle exit status on parsing error
 
 Error codes:
 * Failed to open redir file: 1

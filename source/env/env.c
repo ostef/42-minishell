@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 18:49:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 18:52:24 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 14:57:36 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	env_add_node(t_shell *sh, t_env *node)
+void	env_add_node(t_shell *sh, t_env *node)
 {
 	if (sh->env_last)
 	{
@@ -86,8 +86,16 @@ t_bool	env_remove(t_shell *sh, t_cstr name)
 		return (FALSE);
 	prev = to_del->prev;
 	next = to_del->next;
-	prev->next = next;
-	next->prev = prev;
+	if (prev)
+		prev->next = next;
+	else
+		sh->env_first = next;
+	if (next)
+		next->prev = prev;
+	else
+		sh->env_last = prev;
+	ft_free (to_del->name, ft_heap ());
+	ft_free (to_del->val, ft_heap ());
 	ft_free (to_del, ft_heap ());
 	sh->env_count -= 1;
 	return (TRUE);

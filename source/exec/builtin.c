@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:34:11 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:32:33 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 13:21:27 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 	else if (ft_strequ (cmd->args[0], "pwd"))
 		exit_status = builtin_pwd (sh, cmd);
 	else if (ft_strequ (cmd->args[0], "export"))
-		exit_status = EXIT_FAILURE;
+		exit_status = builtin_export_parse(sh, cmd);
 	else if (ft_strequ (cmd->args[0], "unset"))
-		exit_status = EXIT_FAILURE;
+		exit_status = builtin_unset(sh, cmd);
 	else if (ft_strequ (cmd->args[0], "env"))
 		exit_status = EXIT_FAILURE;
 	else if (ft_strequ (cmd->args[0], "exit"))
