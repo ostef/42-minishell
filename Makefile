@@ -29,7 +29,7 @@ libft:
 	@make -C libft
 
 clean:
-	rm -f $(OBJ_FILES)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)
