@@ -8,6 +8,9 @@ Ana:
 Stefan:
 * Norminette
 * Compile with flags
+* Don't handle ~ and $ for heredoc delimiter
+Bugs:
+* ^D in heredoc
 
 Error codes:
 * Failed to open redir file: 1
@@ -24,7 +27,6 @@ Maybe:
 * Shell arguments
 * Log file so we can have the previous history
 * $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
-* Rewrite quoted string handling in parsing (a"hello" should give ahello, not a hello!) ?
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)
