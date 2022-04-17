@@ -9,8 +9,6 @@ Stefan:
 * Norminette
 * Compile with flags
 * Don't handle ~ and $ for heredoc delimiter
-Bugs:
-* ^D in heredoc
 
 Error codes:
 * Failed to open redir file: 1
