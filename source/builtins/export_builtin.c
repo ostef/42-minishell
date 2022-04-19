@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_builtin.c                                      :+:      :+:    :+:   */
+/*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/13 18:03:29 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/14 13:03:42 by aandric          ###   ########lyon.fr   */
+/*   Created: 2022/04/15 12:33:42 by aandric           #+#    #+#             */
+/*   Updated: 2022/04/15 12:33:56 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_int	builtin_export(t_shell *sh)
 	while (temp)
 	{
 		if (!temp->val)
-			ft_print("declare -x %s=\"\"\n", temp->name);
+			ft_print("declare -x %s\n", temp->name);
 		else
 			ft_print("declare -x %s=\"%s\"\n", temp->name, temp->val);
 		temp = temp->next;
@@ -64,6 +64,20 @@ t_int	builtin_unset(t_shell *sh, t_cmd *cmd)
 	{
 		env_remove(sh, cmd->args[i]);
 		i++;
+	}
+	return (0);
+}
+
+t_int	builtin_env(t_shell *sh)
+{
+	t_env	*temp;
+
+	temp = sh->env_first;
+	while (temp)
+	{
+		if (temp->val)
+			ft_print("%s=%s\n", temp->name, temp->val);
+		temp = temp->next;
 	}
 	return (0);
 }

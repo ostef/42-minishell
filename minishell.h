@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/14 13:19:08 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 16:18:12 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@
 # define DEF_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PIPE_READ 0
 # define PIPE_WRITE 1
-# define ENV_STAND 2
-# define ENV_EXPORT 3
 
 typedef enum e_err
 {
@@ -56,7 +54,6 @@ typedef enum e_exit_code
 
 typedef struct s_env
 {
-	t_int			type;
 	t_str			name;
 	t_str			val;		
 	struct s_env	*prev;
@@ -216,6 +213,7 @@ t_int	builtin_export_parse(t_shell *sh, t_cmd *cmd);
 t_int	builtin_export(t_shell *sh);
 t_int	builtin_export_add_val(t_shell *sh, t_cmd *cmd);
 t_int	builtin_unset(t_shell *sh, t_cmd *cmd);
+t_int	builtin_env(t_shell *sh);
 
 /* Signals */
 

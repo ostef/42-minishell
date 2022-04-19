@@ -1,9 +1,9 @@
 Ana:
-* Builtins:
+* Builtins: done
 	- export
 	- unset
 	- env
-* Handle errors on env parsing
+* Handle errors on env parsing done
 
 Stefan:
 * Norminette
@@ -28,3 +28,13 @@ Maybe:
 
 To remember ; 
 Echo $$ > 12312 (not required in the subject)
+
+Errors to fix
+echo \-n hey
+echo a '' b '' c '' d
+echo a "" b "" c "" d
+echo -n -n lol -n
+
+export "mdr"=hey
+
+[EXPORTS HOME='/Users/emma'] echo $PWD; echo $OLDPWD

@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/13 19:15:33 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/15 12:35:52 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,27 @@ static t_bool	parse_val(t_lexer *lexer, t_env *env)
 	return (TRUE);
 }
 
+static void	ft_print_error_env(t_cstr str)
+{
+	t_int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_fprint(2, "export: '");
+		if (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+			i++;
+		else
+		{
+			write(2, &str[i], 1);
+			if (str[i] == '=')
+				break ;
+			i++;
+		}
+	}
+	ft_fprint(2, "' :not a valid identifier\n");
+}
+
 t_bool	env_parse(t_cstr str, t_env *env)
 {
 	t_lexer	lexer;
@@ -46,11 +67,14 @@ t_bool	env_parse(t_cstr str, t_env *env)
 	while (lexer.curr < lexer.end)
 	{
 		if (!parse_ident (&lexer, env))
-			return (FALSE);// afficher le nom de lerreur
+		{
+			ft_print_error_env(str);
+			return (FALSE);
+		}
 		if (!ft_lexer_skip_char(&lexer, '='))
 			return (lexer.curr == lexer.end);
 		if (!parse_val (&lexer, env))
-			return (FALSE); // afficher le nom de lerreur
+			return (FALSE);
 	}
 	return (TRUE);
 }
