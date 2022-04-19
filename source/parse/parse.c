@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/07 15:37:38 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/17 17:20:30 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,29 @@ static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
 	t_redir_kind redir, t_cmd *out)
 {
 	t_token	*token;
+	char	quote;
 
-	token = ft_lexer_skip_quoted_str(lexer);
-	if (!token)
-		token = ft_lexer_skip_delim (lexer, "\v\t\n\r <>|'\"");
+	if (lexer->curr >= lexer->end)
+		return (NULL);
+	token = ft_lexer_push_token (lexer);
 	if (!token)
 		return (NULL);
+	token->str = lexer->curr;
+	quote = 0;
+	while (lexer->curr < lexer->end)
+	{
+		if (*lexer->curr == '"' || *lexer->curr == '\'')
+		{
+			if (quote == *lexer->curr)
+				quote = 0;
+			else if (quote == 0)
+				quote = *lexer->curr;
+		}
+		if (quote == 0 && ft_strchr ("\v\t\n\r <>|", *lexer->curr))
+			break ;
+		lexer->curr += 1;
+	}
+	token->len = lexer->curr - token->str;
 	if (token->len > 0)
 	{
 		token->str = post_process_token(sh, token->str, token->len);
@@ -73,7 +90,7 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 		token = parse_word (sh, lexer, redir_kind, out);
 		if (!token && redir_kind)
 			return (FALSE);
-		if (!token || (token->kind == TK_DELIMITED && token->delim == '|'))
+		if (!token || *lexer->curr == '|')
 			break ;
 	}
 	if (out->args_count == 0 && !out->redir_first)
@@ -107,7 +124,6 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 			eprint ("syntax error near unexpected token `newline'");
 			return (FALSE);
 		}
-		line->count += 1;
 	}
 	return (TRUE);
 }
