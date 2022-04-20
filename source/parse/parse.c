@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 14:03:31 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:22:51 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,18 +115,14 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 			return (FALSE);
 		if (!cmd_parse (sh, &lexer, cmd))
 		{
-			if (lexer.curr >= lexer.end)
-				eprint ("syntax error near unexpected token `newline'");
-			else
-				eprint ("syntax error near unexpected token `%c'", *lexer.curr);
 			g_globals.exit_status = EXIT_SYNTAX_ERROR;
-			return (FALSE);
+			if (lexer.curr >= lexer.end)
+				return (eprint ("%s `newline'", ERR_STR_SYNTAX));
+			else
+				return (eprint ("%s `%c'", ERR_STR_SYNTAX, *lexer.curr));
 		}
 		if (ft_lexer_skip_char (&lexer, '|') && lexer.curr == lexer.end)
-		{
-			eprint ("syntax error near unexpected token `newline'");
-			return (FALSE);
-		}
+			return (eprint ("%s `newline'", ERR_STR_SYNTAX));
 	}
 	return (TRUE);
 }

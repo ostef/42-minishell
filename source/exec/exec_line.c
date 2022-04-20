@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/13 18:43:53 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:08:47 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,13 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 		if (!redir_open(sh, cmd))
 		{
 			cmd->has_errors = TRUE;
-			dup2 (saved_stdin, STDIN);
-			return (FALSE);
+			break ;
 		}
 		cmd = cmd->next;
 	}
 	dup2 (saved_stdin, STDIN);
 	close (saved_stdin);
-	return (TRUE);
+	return (!cmd || !cmd->has_errors);
 }
 
 static t_int	wait_for_cmds(t_cmd_line *line)
