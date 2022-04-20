@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/15 12:35:52 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 14:24:44 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,20 @@
 static t_bool	parse_ident(t_lexer *lexer, t_env *env)
 {
 	t_token	*token;
+	t_s64	i;
 
-	token = ft_lexer_skip_identifier(lexer);
-	if (!token)
+	token = ft_lexer_skip_delim(lexer, "=");
+	if (!token || token->len == 0)
 		return (FALSE);
+	i = 0;
+	while (i < token->len)
+	{
+		if (i == 0 && !ft_is_alpha (token->str[i]) && token->str[i] != '_')
+			return (FALSE);
+		if (!ft_is_alnum (token->str[i]))
+			return (FALSE);
+		i += 1;
+	}
 	env->name = ft_strndup(token->str, token->len, ft_temp());
 	if (!env->name)
 		return (FALSE);
@@ -29,6 +39,11 @@ static t_bool	parse_val(t_lexer *lexer, t_env *env)
 {
 	t_token	*token;
 
+	if (lexer->curr >= lexer->end)
+	{
+		env->val = ft_strdup ("", ft_temp ());
+		return (TRUE);
+	}
 	token = ft_lexer_skip_delim (lexer, "\0");
 	if (!token)
 		return (FALSE);
@@ -38,43 +53,31 @@ static t_bool	parse_val(t_lexer *lexer, t_env *env)
 	return (TRUE);
 }
 
-static void	ft_print_error_env(t_cstr str)
-{
-	t_int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		ft_fprint(2, "export: '");
-		if (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
-			i++;
-		else
-		{
-			write(2, &str[i], 1);
-			if (str[i] == '=')
-				break ;
-			i++;
-		}
-	}
-	ft_fprint(2, "' :not a valid identifier\n");
-}
-
 t_bool	env_parse(t_cstr str, t_env *env)
 {
 	t_lexer	lexer;
+	t_token	*token;
+	t_bool	ok;
 
 	ft_lexer_init(&lexer, str, ft_temp());
 	while (lexer.curr < lexer.end)
 	{
-		if (!parse_ident (&lexer, env))
+		ok = parse_ident (&lexer, env);
+		if (!ok)
 		{
-			ft_print_error_env(str);
+			token = lexer.last_token;
+			if (token)
+				eprint ("export: `%*s': not a valid identifier",
+					token->len, token->str);
 			return (FALSE);
 		}
 		if (!ft_lexer_skip_char(&lexer, '='))
 			return (lexer.curr == lexer.end);
 		if (!parse_val (&lexer, env))
+		{
+			eprint ("export: Could not parse value");
 			return (FALSE);
+		}
 	}
 	return (TRUE);
 }
