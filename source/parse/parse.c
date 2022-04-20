@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/17 17:20:30 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 14:03:31 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
 	token->len = lexer->curr - token->str;
 	if (token->len > 0)
 	{
-		token->str = post_process_token(sh, token->str, token->len);
-		token->len = ft_strlen(token->str);
+		if (redir != RD_IN_HERE)
+		{
+			token->str = post_process_token(sh, token->str, token->len);
+			token->len = ft_strlen(token->str);
+		}
 		if (redir)
 			cmd_add_redir (out, redir, token);
 		else
