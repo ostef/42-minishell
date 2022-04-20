@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/20 14:24:44 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:18:52 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ t_bool	env_parse(t_cstr str, t_env *env)
 	t_bool	ok;
 
 	ft_lexer_init(&lexer, str, ft_temp());
+	if (lexer.curr == lexer.end)
+		return (eprint("export: `': not a valid identifier"));
 	while (lexer.curr < lexer.end)
 	{
 		ok = parse_ident (&lexer, env);
@@ -67,17 +69,15 @@ t_bool	env_parse(t_cstr str, t_env *env)
 		{
 			token = lexer.last_token;
 			if (token)
-				eprint ("export: `%*s': not a valid identifier",
-					token->len, token->str);
-			return (FALSE);
+				return (eprint ("export: `%*s': not a valid identifier",
+						token->len, token->str));
+			else
+				return (eprint ("export: `': not a valid identifier"));
 		}
 		if (!ft_lexer_skip_char(&lexer, '='))
 			return (lexer.curr == lexer.end);
 		if (!parse_val (&lexer, env))
-		{
-			eprint ("export: Could not parse value");
-			return (FALSE);
-		}
+			return (eprint ("export: Could not parse value"));
 	}
 	return (TRUE);
 }
