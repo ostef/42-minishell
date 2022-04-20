@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 16:58:57 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 17:02:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 16:48:32 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	eprint(t_cstr fmt_str, ...)
+t_bool	eprint(t_cstr fmt_str, ...)
 {
 	va_list	va;
 
@@ -20,4 +20,5 @@ void	eprint(t_cstr fmt_str, ...)
 	ft_fprint (2, "minishell: ");
 	ft_vfprintln (2, fmt_str, va);
 	va_end (va);
+	return (FALSE);
 }

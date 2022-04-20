@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/14 16:18:12 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:21:13 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <sys/wait.h>
 
 # define DEF_PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define ERR_STR_SYNTAX "syntax error near unexpected token"
 # define PIPE_READ 0
 # define PIPE_WRITE 1
 
@@ -153,7 +154,7 @@ typedef struct s_globals
 
 extern t_globals	g_globals;
 
-void	eprint(t_cstr fmt_str, ...);
+t_bool	eprint(t_cstr fmt_str, ...);
 void	shell_loop(t_shell *sh);
 t_cstr	get_prompt(t_shell *sh);
 
