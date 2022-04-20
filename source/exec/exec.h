@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:31:09 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/04 20:12:48 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:13:57 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
 void	cmd_exec(t_shell *sh, t_cmd *cmd);
 t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
 t_bool	redir_open(t_shell *sh, t_cmd *cmd);
+void	cmd_dup_files(t_cmd *cmd);
 
 #endif
