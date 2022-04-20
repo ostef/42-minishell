@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:09:51 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/06 13:31:28 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:14:52 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+void	cmd_dup_files(t_cmd *cmd)
+{
+	if (cmd->fd_out)
+		dup2 (cmd->fd_out, STDOUT);
+	else if (cmd->next)
+		dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
+	if (cmd->fd_in)
+		dup2 (cmd->fd_in, STDIN);
+	else if (cmd->prev)
+		dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
+}
 
 void	cmd_close_files_up_to(t_cmd *cmd)
 {
@@ -84,14 +96,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		cmd->pid = fork ();
 		if (cmd->pid == 0)
 		{
-			if (cmd->fd_out)
-				dup2 (cmd->fd_out, STDOUT);
-			else if (cmd->next)
-				dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
-			if (cmd->fd_in)
-				dup2 (cmd->fd_in, STDIN);
-			else if (cmd->prev)
-				dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
+			cmd_dup_files(cmd);
 			cmd_close_files_up_to (cmd);
 			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			cmd_handle_error (cmd, err);
