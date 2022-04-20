@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:34:11 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/14 16:14:47 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 17:14:35 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd)
 
 	exit_status = EXIT_FAILURE;
 	save_std_fds (std_fds);
-	if (cmd->next)
-		dup2 (cmd->pipe[PIPE_WRITE], STDOUT);
-	if (cmd->prev)
-		dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
+	cmd_dup_files(cmd);
 	if (ft_strequ (cmd->args[0], "echo"))
 		exit_status = builtin_echo (sh, cmd);
 	else if (ft_strequ (cmd->args[0], "cd"))
