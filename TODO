@@ -1,5 +1,4 @@
 * Norminette
-* Compile with flags
 
 Error codes:
 * Failed to open redir file: 1
@@ -16,3 +15,6 @@ Maybe:
 * Shell arguments
 * Log file so we can have the previous history
 * $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
+
+Errors
+cat -e /dev/random | cat -e | head -c 10
