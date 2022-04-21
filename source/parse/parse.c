@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 17:22:51 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 13:55:16 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,10 @@ static t_cmd	*cmd_add(t_cmd_line *line)
 	return (new);
 }
 
-static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
-	t_redir_kind redir, t_cmd *out)
+static void	skip_word(t_lexer *lexer)
 {
-	t_token	*token;
 	char	quote;
 
-	if (lexer->curr >= lexer->end)
-		return (NULL);
-	token = ft_lexer_push_token (lexer);
-	if (!token)
-		return (NULL);
-	token->str = lexer->curr;
 	quote = 0;
 	while (lexer->curr < lexer->end)
 	{
@@ -62,6 +54,20 @@ static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
 			break ;
 		lexer->curr += 1;
 	}
+}
+
+static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
+	t_redir_kind redir, t_cmd *out)
+{
+	t_token	*token;
+
+	if (lexer->curr >= lexer->end)
+		return (NULL);
+	token = ft_lexer_push_token (lexer);
+	if (!token)
+		return (NULL);
+	token->str = lexer->curr;
+	skip_word (lexer);
 	token->len = lexer->curr - token->str;
 	if (token->len > 0)
 	{
