@@ -6,7 +6,7 @@
 /*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/15 14:30:54 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/04/22 17:39:49 by aandric          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	env_init(t_shell *sh, t_str *envp)
 	}
 	getcwd (cwd, PATH_MAX);
 	env_set (sh, "PWD", cwd);
+	env_remove (sh, "OLDPWD");
 	env_set (sh, "OLDPWD", NULL);
 	ft_str_to_int (env_get (sh, "SHLVL"), &shlvl);
 	env_set (sh, "SHLVL", ft_fmt (ft_temp (), "%i", shlvl + 1));
