@@ -4,13 +4,13 @@ SRC_FILES = main.c shell.c error.c signal.c\
 	env/env.c env/parse.c\
 	parse/parse.c parse/args.c parse/redirs_parse.c parse/post_process.c\
 	exec/exec_line.c exec/exec_cmd.c exec/find.c exec/builtin.c exec/redirs.c\
-	builtins/dir.c builtins/shell.c builtins/export_builtin.c  
+	builtins/dir.c builtins/shell.c builtins/export_builtin.c
 RL_LIB = -L$(shell brew --prefix readline)/lib
 RL_INC = -I$(shell brew --prefix readline)/include
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_DIRS = libft .
-DEPENDENCIES = minishell.h libft/libft.a Makefile
+DEPENDENCIES = minishell.h source/exec/exec.h source/parse/parse.h libft/libft.a Makefile
 LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
