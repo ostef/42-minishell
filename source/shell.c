@@ -96,7 +96,7 @@ void	shell_loop(t_shell *sh)
 		sh->should_exit = TRUE;
 		return ;
 	}
-	else
+	else if (ft_strlen(input))
 		add_history(input);
 	ft_memset (&line, 0, sizeof (t_cmd_line));
 	if (cmd_line_parse (sh, input, &line))

@@ -222,9 +222,6 @@ t_int	builtin_env(t_shell *sh);
 void	default_signal_handler(int signo);
 void	pre_exec_sigint_handler(int signo);
 void	exec_signal_handler(int signo);
-void	sig_handler(void);
-void	sig_nl(void);
-void	put_nl(int signo);
 
 void	rl_replace_line(const char *text, int clearundo);
 

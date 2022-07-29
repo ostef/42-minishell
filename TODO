@@ -17,23 +17,27 @@ Maybe:
 * $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
 
 Errors
--n // -Nn …
+OK 
+-n // -Nn … 
 
+A verifier mac ecole
 Exit code erreur 0 au lieu de 1
 exit 2 | exit qbc Z >> echo $? = 255
 
+NOK
 Si minishell dans minishell code d’erreur pas bon // ignorer le signo du parent
-
 Renvoyer code d’erreur signaux 
+Attention quand minishell imbriques ctl -\ erreur avec readline probablement affiche prompt sans retour a la ligne plusieurs fois 
 
-Unset path (pas clair pour moi)
+OK
+Unset path << >> gere comme dans bash. si lance avec env -i alors path non visible mais existant. Si commande unset path alors le path est bien supprime et commandes ne fonctionnent plus 
 
-
+OK
 Leaks fd à traiter -> bien close quand signaux avant d’exit vérifier avec ls/dev/fd
 (Verif avec ctl c notamment)
 
+OK
 Historique ne pas ajouter lignes vide avec strlen 0
 
-$ variables extend pas dans le bon ordre dans le parsing ré parcourir parsing (c’était pas très clair pour moi)
-
-
+OSEF
+$ variables extend pas dans le bon ordre dans le parsing ré parcourir parsing 

@@ -41,12 +41,17 @@ void	pre_exec_sigint_handler(int signo)
 	}
 }
 
+// void	exec_signal_handler(int signo)
+// {
+// 	g_globals.handled_signal = signo;
+// 	g_globals.exit_status = EXIT_SIGNAL + signo;
+// 	if (signo == SIGINT)
+// 		ft_print ("\n");
+// 	if (signo == SIGQUIT)
+// 		ft_println ("Quit: %i", signo);
+// }
+
 void	exec_signal_handler(int signo)
 {
-	g_globals.handled_signal = signo;
-	g_globals.exit_status = EXIT_SIGNAL + signo;
-	if (signo == SIGINT)
-		ft_print ("\n");
-	else if (signo == SIGQUIT)
-		ft_println ("Quit: %i", signo);
+	(void)signo;
 }
