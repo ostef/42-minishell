@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 12:33:42 by aandric           #+#    #+#             */
-/*   Updated: 2022/07/29 16:14:50 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:25:00 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_int	builtin_export_add_val(t_shell *sh, t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		ft_memset(&new_val, 0, sizeof(t_env));
-		if (env_parse(cmd->args[i], &new_val))
+		if (env_parse(sh, cmd->args[i], &new_val))
 			env_set(sh, new_val.name, new_val.val);
 		else
 			result = 1;

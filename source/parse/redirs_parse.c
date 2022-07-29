@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirs.c                                           :+:      :+:    :+:   */
+/*   redirs_parse.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:04:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 15:27:30 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:43:13 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,17 @@ t_redir_kind	cmd_parse_redir_symbol(t_lexer *lexer)
 	return (kind);
 }
 
-t_redir	*cmd_add_redir(t_cmd *cmd, t_redir_kind kind, t_token *token)
+t_redir	*cmd_add_redir(t_shell *sh, t_cmd *cmd,
+	t_redir_kind kind, t_token *token)
 {
 	t_redir	*new;
 	t_redir	*tmp_next;
 
-	new = (t_redir *)ft_zalloc (sizeof (t_redir), ft_temp ());
+	new = (t_redir *)ft_zalloc (sizeof (t_redir), sh->arena);
 	if (!new)
 		return (NULL);
 	new->kind = kind;
-	new->filename = ft_strndup (token->str, token->len, ft_temp ());
+	new->filename = ft_strndup (token->str, token->len, sh->arena);
 	if (cmd->redir_last)
 	{
 		tmp_next = cmd->redir_last->next;

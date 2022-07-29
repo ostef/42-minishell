@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:31:09 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 17:13:57 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:26:20 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_bool	cmd_is_builtin(t_cmd *cmd);
  * Searches all directories in the PATH environment variable for a command
  * with the name `cmd_name` that can be executed, unless `cmd_name` is a path
  * (it starts with ~, . or /). `out_filename` receives the full path of the
- * command, allocated with ft_temp (), or `cmd_name` directly if it is a path.
+ * command, allocated with the sh arena, or `cmd_name` directly if it is a path.
  * Returns OK if a valid path was found, otherwise one of ERR_CMD_NO_SUCH_FILE,
  * ERR_CMD_PERM is returned if `cmd_name` is a path, or ERR_CMD_NOT_FOUND if
  * the command name is not a path.

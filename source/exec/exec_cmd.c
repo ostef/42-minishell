@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:09:51 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 17:14:52 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:20:29 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_str	*env_list_to_array(t_shell *sh)
 	t_int	i;
 
 	result = (t_str *)ft_alloc (
-			sizeof (t_str) * (sh->env_count + 1), ft_temp ());
+			sizeof (t_str) * (sh->env_count + 1), sh->arena);
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -55,7 +55,7 @@ static t_str	*env_list_to_array(t_shell *sh)
 	while (curr)
 	{
 		if (curr->val)
-			result[i] = ft_fmt (ft_temp (), "%s=%s", curr->name, curr->val);
+			result[i] = ft_fmt (sh->arena, "%s=%s", curr->name, curr->val);
 		else
 			result[i] = curr->name;
 		i += 1;

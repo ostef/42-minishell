@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 20:49:14 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:37:24 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	env_init(t_shell *sh, t_str *envp)
 	while (envp[i])
 	{
 		ft_memset (&env, 0, sizeof (t_env));
-		if (env_parse(envp[i], &env))
+		if (env_parse(sh, envp[i], &env))
 			env_set(sh, env.name, env.val);
 		i++;
 	}
@@ -34,7 +34,7 @@ void	env_init(t_shell *sh, t_str *envp)
 	env_remove (sh, "OLDPWD");
 	env_set (sh, "OLDPWD", NULL);
 	ft_str_to_int (env_get (sh, "SHLVL"), &shlvl);
-	env_set (sh, "SHLVL", ft_fmt (ft_temp (), "%i", shlvl + 1));
+	env_set (sh, "SHLVL", ft_fmt (sh->arena, "%i", shlvl + 1));
 	if (!env_get_node (sh, "PATH"))
 	{
 		env_set (sh, "PATH", DEF_PATH);
@@ -76,7 +76,7 @@ t_cstr	get_prompt(t_shell *sh)
 		}
 		prompt += i;
 	}
-	return (ft_fmt (ft_temp (), "\033[1m%s$ \033[0m", prompt));
+	return (ft_fmt (sh->arena, "\033[1m%s$ \033[0m", prompt));
 }
 
 static t_bool	should_be_added_to_history(t_cstr line)
@@ -98,7 +98,7 @@ void	shell_loop(t_shell *sh)
 	t_str		input;
 	t_cmd_line	line;
 
-	ft_reset_temp_storage ();
+	ft_reset_arena (&sh->arena_memory);
 	tcsetattr(0, TCSANOW, &sh->new_termios);
 	g_globals.handled_signal = 0;
 	signal (SIGINT, default_signal_handler);

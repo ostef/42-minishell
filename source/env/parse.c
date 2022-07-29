@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 17:30:56 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/20 17:18:52 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:21:46 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_bool	parse_ident(t_lexer *lexer, t_env *env)
+static t_bool	parse_ident(t_shell *sh, t_lexer *lexer, t_env *env)
 {
 	t_token	*token;
 	t_s64	i;
@@ -29,42 +29,42 @@ static t_bool	parse_ident(t_lexer *lexer, t_env *env)
 			return (FALSE);
 		i += 1;
 	}
-	env->name = ft_strndup(token->str, token->len, ft_temp());
+	env->name = ft_strndup(token->str, token->len, sh->arena);
 	if (!env->name)
 		return (FALSE);
 	return (TRUE);
 }
 
-static t_bool	parse_val(t_lexer *lexer, t_env *env)
+static t_bool	parse_val(t_shell *sh, t_lexer *lexer, t_env *env)
 {
 	t_token	*token;
 
 	if (lexer->curr >= lexer->end)
 	{
-		env->val = ft_strdup ("", ft_temp ());
+		env->val = ft_strdup ("", sh->arena);
 		return (TRUE);
 	}
 	token = ft_lexer_skip_delim (lexer, "\0");
 	if (!token)
 		return (FALSE);
-	env->val = ft_strndup(token->str, token->len, ft_temp());
+	env->val = ft_strndup(token->str, token->len, sh->arena);
 	if (!env->val)
 		return (FALSE);
 	return (TRUE);
 }
 
-t_bool	env_parse(t_cstr str, t_env *env)
+t_bool	env_parse(t_shell *sh, t_cstr str, t_env *env)
 {
 	t_lexer	lexer;
 	t_token	*token;
 	t_bool	ok;
 
-	ft_lexer_init(&lexer, str, ft_temp());
+	ft_lexer_init(&lexer, str, sh->arena);
 	if (lexer.curr == lexer.end)
 		return (eprint("export: `': not a valid identifier"));
 	while (lexer.curr < lexer.end)
 	{
-		ok = parse_ident (&lexer, env);
+		ok = parse_ident (sh, &lexer, env);
 		if (!ok)
 		{
 			token = lexer.last_token;
@@ -76,7 +76,7 @@ t_bool	env_parse(t_cstr str, t_env *env)
 		}
 		if (!ft_lexer_skip_char(&lexer, '='))
 			return (lexer.curr == lexer.end);
-		if (!parse_val (&lexer, env))
+		if (!parse_val (sh, &lexer, env))
 			return (eprint ("export: Could not parse value"));
 	}
 	return (TRUE);

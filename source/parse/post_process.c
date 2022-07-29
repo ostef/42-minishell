@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   post_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:07:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 17:04:50 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:18:53 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	handle_dollars(t_shell *sh, t_lexer *lexer, t_builder *builder)
 	token = ft_lexer_skip_identifier (lexer);
 	if (token)
 		ft_builder_append (builder, env_get (sh,
-				ft_strndup (token->str, token->len, ft_temp ())));
+				ft_strndup (token->str, token->len, sh->arena)));
 	else if (ft_lexer_skip_char (lexer, '?'))
 		ft_builder_append_fmt (builder, "%d", g_globals.exit_status);
 	else
@@ -47,8 +47,8 @@ t_str	expand_variables(t_shell *sh, t_cstr str, t_int len)
 	t_builder	builder;
 	char		quote;
 
-	ft_builder_init (&builder, 100, ft_temp ());
-	ft_lexer_init_n(&lexer, str, len, ft_temp());
+	ft_builder_init (&builder, 100, sh->arena);
+	ft_lexer_init_n(&lexer, str, len, sh->arena);
 	quote = 0;
 	while (lexer.curr < lexer.end)
 	{
@@ -72,10 +72,10 @@ t_str	post_process_token(t_shell *sh, t_cstr str, t_int len)
 	if (str[0] == '~')
 	{
 		if (len > 1 && str[1] == '/')
-			str = ft_fmt (ft_temp (), "%s%.*s",
+			str = ft_fmt (sh->arena, "%s%.*s",
 					env_get (sh, "HOME"), len - 1, str + 1);
 		else if (len == 1)
-			str = ft_fmt (ft_temp (), "%s/%.*s",
+			str = ft_fmt (sh->arena, "%s/%.*s",
 					env_get (sh, "HOME"), len - 1, str + 1);
 		len = ft_strlen (str);
 	}

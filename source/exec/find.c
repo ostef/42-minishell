@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 15:32:22 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/21 15:45:38 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:19:46 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename)
 		return (is_command (*out_filename));
 	if (!env_get (sh, "PATH"))
 		return (ERR_CMD_NOT_FOUND);
-	ft_lexer_init (&lexer, env_get (sh, "PATH"), ft_temp ());
+	ft_lexer_init (&lexer, env_get (sh, "PATH"), sh->arena);
 	while (lexer.curr < lexer.end)
 	{
 		token = ft_lexer_skip_delim (&lexer, ":");
 		if (!token)
 			break ;
 		ft_lexer_skip_char (&lexer, ':');
-		*out_filename = ft_fmt(ft_temp(), "%.*s/%s",
+		*out_filename = ft_fmt(sh->arena, "%.*s/%s",
 				token->len, token->str, cmd_name);
 		if (is_command (*out_filename) == OK)
 			return (OK);

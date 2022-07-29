@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 20:44:51 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:15:24 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ typedef struct s_cmd_line
 
 typedef struct s_shell
 {
+	t_arena			arena_memory;
+	t_alloc			arena;
 	t_env			*env_first;
 	t_env			*env_last;
 	t_int			env_count;
@@ -185,7 +187,7 @@ void	env_free(t_shell *sh);
  * Valid variable names consist of letters, underscores and digits, and do not
  * begin with a digit.
  */
-t_bool	env_parse(t_cstr str, t_env *env);
+t_bool	env_parse(t_shell *sh, t_cstr str, t_env *env);
 
 void	env_add_node(t_shell *sh, t_env *node);
 

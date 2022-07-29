@@ -6,18 +6,18 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:03:20 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 21:24:27 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 
-static t_cmd	*cmd_add(t_cmd_line *line)
+static t_cmd	*cmd_add(t_shell *sh, t_cmd_line *line)
 {
 	t_cmd	*new;
 	t_cmd	*tmp_next;
 
-	new = (t_cmd *)ft_zalloc (sizeof (t_cmd), ft_temp ());
+	new = (t_cmd *)ft_zalloc (sizeof (t_cmd), sh->arena);
 	if (!new)
 		return (NULL);
 	if (line->last)
@@ -77,9 +77,9 @@ static t_token	*parse_word(t_shell *sh, t_lexer *lexer,
 			token->len = ft_strlen(token->str);
 		}
 		if (redir)
-			cmd_add_redir (out, redir, token);
+			cmd_add_redir (sh, out, redir, token);
 		else
-			cmd_add_arg (out, token);
+			cmd_add_arg (sh, out, token);
 	}
 	return (token);
 }
@@ -104,7 +104,7 @@ static t_bool	cmd_parse(t_shell *sh, t_lexer *lexer, t_cmd *out)
 	}
 	if (out->args_count == 0 && !out->redir_first)
 		return (FALSE);
-	return (cmd_null_terminate_args (out));
+	return (cmd_null_terminate_args (sh, out));
 }
 
 t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
@@ -112,12 +112,12 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 	t_lexer	lexer;
 	t_cmd	*cmd;
 
-	ft_lexer_init (&lexer, str, ft_temp());
+	ft_lexer_init (&lexer, str, sh->arena);
 	ft_lexer_skip_spaces (&lexer);
 	line->count = 0;
 	while (lexer.curr < lexer.end)
 	{
-		cmd = cmd_add (line);
+		cmd = cmd_add (sh, line);
 		if (!cmd)
 			return (FALSE);
 		if (!cmd_parse (sh, &lexer, cmd))
