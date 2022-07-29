@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/04 21:06:34 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 15:46:52 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_int	main(t_int ac, t_str *av, t_str *envp)
 {
-	t_shell		sh;
+	t_shell	sh;
 
 	(void)ac;
 	(void)av;
@@ -30,5 +30,5 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	tcsetattr(0, TCSANOW, &sh.old_termios);
 	if (ft_get_heap_allocations () != 0)
 		eprint ("Found %i leaks.", ft_get_heap_allocations ());
-	return (0);
+	return (g_globals.exit_status);
 }
