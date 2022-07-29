@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 18:49:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:07:24 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:13:11 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 	node = env_get_node (sh, name);
 	if (node)
 	{
+		node->hide = FALSE;
 		if (val)
 		{
 			ft_free (node->val, ft_heap ());

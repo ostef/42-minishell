@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/15 12:33:42 by aandric           #+#    #+#             */
-/*   Updated: 2022/07/29 16:00:37 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:14:50 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ t_int	builtin_export(t_shell *sh)
 	temp = sh->env_first;
 	while (temp)
 	{
-		if (!temp->val)
+		if (!temp->hide && !temp->val)
 			ft_print("declare -x %s\n", temp->name);
-		else
+		else if (!temp->hide)
 			ft_print("declare -x %s=\"%s\"\n", temp->name, temp->val);
 		temp = temp->next;
 	}
@@ -79,7 +79,7 @@ t_int	builtin_env(t_shell *sh)
 	temp = sh->env_first;
 	while (temp)
 	{
-		if (temp->val)
+		if (!temp->hide && temp->val)
 			ft_print("%s=%s\n", temp->name, temp->val);
 		temp = temp->next;
 	}

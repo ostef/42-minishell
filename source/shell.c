@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/22 17:39:49 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:13:34 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ void	env_init(t_shell *sh, t_str *envp)
 	env_set (sh, "OLDPWD", NULL);
 	ft_str_to_int (env_get (sh, "SHLVL"), &shlvl);
 	env_set (sh, "SHLVL", ft_fmt (ft_temp (), "%i", shlvl + 1));
+	if (!env_get_node (sh, "PATH"))
+	{
+		env_set (sh, "PATH", DEF_PATH);
+		env_get_node (sh, "PATH")->hide = TRUE;
+	}
 }
 
 void	env_free(t_shell *sh)
