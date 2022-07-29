@@ -25,11 +25,14 @@ Si minishell dans minishell code d’erreur pas bon // ignorer le signo du paren
 
 Renvoyer code d’erreur signaux 
 
-$ variables extend pas dans le bon ordre dans le parsing ré parcourir parsing (c’était pas très clair pour moi)
-
 Unset path (pas clair pour moi)
+
 
 Leaks fd à traiter -> bien close quand signaux avant d’exit vérifier avec ls/dev/fd
 (Verif avec ctl c notamment)
 
 Historique ne pas ajouter lignes vide avec strlen 0
+
+$ variables extend pas dans le bon ordre dans le parsing ré parcourir parsing (c’était pas très clair pour moi)
+
+
