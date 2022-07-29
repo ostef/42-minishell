@@ -63,6 +63,10 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 		else if (cmd->args_count > 0)
 		{
 			waitpid (cmd->pid, &status, 0);
+			if (WTERMSIG(status) == SIGINT)
+				ft_print ("\n");
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_println ("Quit: 3");
 			status = WEXITSTATUS (status);
 		}
 		cmd = cmd->next;
