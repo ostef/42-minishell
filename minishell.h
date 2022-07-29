@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:11:39 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:44:51 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,19 @@ typedef struct s_shell
 	struct termios	new_termios;
 }	t_shell;
 
+/*
+ * This is the struct containing all the global variables used
+ * in the program.
+ *
+ * handled_signal: the last signal that was handled. This is reset to
+ * 0 each time we start executing a command line. We need this variable
+ * only to know if a SIGINT signal was handled while waiting for user
+ * input inside a readline () call.
+ *
+ * exit_status: the exit status of the last executed command or intercepted
+ * signal. We need this variable because there is no way to modify the state
+ * of the program inside a signal handler, other than with a global variable.
+ */
 typedef struct s_globals
 {
 	t_int	handled_signal;
@@ -173,10 +186,6 @@ void	env_free(t_shell *sh);
  * begin with a digit.
  */
 t_bool	env_parse(t_cstr str, t_env *env);
-/*
- * Retrieve the environment variable named `name` inside the sh->env list.
- * Returns the list node of the variable, or NULL if it does not exist.
- */
 
 void	env_add_node(t_shell *sh, t_env *node);
 
