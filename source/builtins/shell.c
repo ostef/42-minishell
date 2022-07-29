@@ -6,11 +6,28 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 15:44:49 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:00:03 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_bool	should_ignore_newline(t_cstr arg)
+{
+	t_int	i;
+
+	i = 0;
+	if (arg[i] != '-')
+		return (FALSE);
+	i += 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (FALSE);
+		i += 1;
+	}
+	return (TRUE);
+}
 
 t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 {
@@ -20,7 +37,7 @@ t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	(void)sh;
 	i = 1;
 	print_newline = TRUE;
-	while (cmd->args[i] && ft_strequ (cmd->args[i], "-n"))
+	while (cmd->args[i] && should_ignore_newline (cmd->args[i]))
 	{
 		print_newline = FALSE;
 		i += 1;
@@ -73,7 +90,7 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 		if (!parse_exit_status (cmd->args[1], &exit_status))
 		{
 			eprint ("exit: %s: numeric argument required", cmd->args[1]);
-			return (255); 
+			return (255);
 		}
 	}
 	if (!cmd->next && !cmd->prev)
