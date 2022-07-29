@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:13:34 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:49:14 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,20 @@ t_cstr	get_prompt(t_shell *sh)
 	return (ft_fmt (ft_temp (), "\033[1m%s$ \033[0m", prompt));
 }
 
+static t_bool	should_be_added_to_history(t_cstr line)
+{
+	t_int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_is_space (line[i]))
+			return (TRUE);
+		i += 1;
+	}
+	return (FALSE);
+}
+
 void	shell_loop(t_shell *sh)
 {
 	t_str		input;
@@ -96,7 +110,7 @@ void	shell_loop(t_shell *sh)
 		sh->should_exit = TRUE;
 		return ;
 	}
-	else if (ft_strlen(input))
+	else if (should_be_added_to_history (input))
 		add_history(input);
 	ft_memset (&line, 0, sizeof (t_cmd_line));
 	if (cmd_line_parse (sh, input, &line))
