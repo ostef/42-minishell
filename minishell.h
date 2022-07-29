@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 15:48:25 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 17:21:13 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:11:39 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ typedef enum e_exit_code
 typedef struct s_env
 {
 	t_str			name;
-	t_str			val;		
+	t_str			val;
+	t_bool			hide;
 	struct s_env	*prev;
 	struct s_env	*next;
 }	t_env;

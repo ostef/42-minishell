@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 18:49:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/14 14:57:36 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:13:11 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_bool	env_set(t_shell *sh, t_cstr name, t_cstr val)
 	node = env_get_node (sh, name);
 	if (node)
 	{
+		node->hide = FALSE;
 		if (val)
 		{
 			ft_free (node->val, ft_heap ());
@@ -68,8 +69,6 @@ t_cstr	env_get(t_shell *sh, t_cstr name)
 	t_env	*env;
 
 	env = env_get_node (sh, name);
-	if (!env && ft_strequ (name, "PATH"))
-		return (DEF_PATH);
 	if (!env || !env->val)
 		return ("");
 	return (env->val);

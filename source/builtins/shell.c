@@ -6,11 +6,28 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/20 13:55:29 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:00:03 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_bool	should_ignore_newline(t_cstr arg)
+{
+	t_int	i;
+
+	i = 0;
+	if (arg[i] != '-')
+		return (FALSE);
+	i += 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (FALSE);
+		i += 1;
+	}
+	return (TRUE);
+}
 
 t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 {
@@ -20,7 +37,7 @@ t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	(void)sh;
 	i = 1;
 	print_newline = TRUE;
-	while (cmd->args[i] && ft_strequ (cmd->args[i], "-n"))
+	while (cmd->args[i] && should_ignore_newline (cmd->args[i]))
 	{
 		print_newline = FALSE;
 		i += 1;
@@ -37,9 +54,46 @@ t_int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	return (0);
 }
 
+static t_bool	parse_exit_status(t_cstr arg, t_int *exit_status)
+{
+	t_s64	atoi_res;
+	t_s64	i;
+
+	i = 0;
+	while (ft_is_space (arg[i]))
+		i += 1;
+	atoi_res = ft_str_to_int (arg + i, exit_status);
+	if (atoi_res == 0)
+		return (FALSE);
+	i += atoi_res;
+	while (arg[i])
+	{
+		if (!ft_is_space (arg[i]))
+			return (FALSE);
+		i += 1;
+	}
+	return (TRUE);
+}
+
 t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 {
+	t_int	exit_status;
+
+	exit_status = 0;
+	if (cmd->args_count > 2)
+	{
+		eprint ("exit: too many arguments");
+		return (1);	// @Todo: check if this one is correct
+	}
+	if (cmd->args_count > 1)
+	{
+		if (!parse_exit_status (cmd->args[1], &exit_status))
+		{
+			eprint ("exit: %s: numeric argument required", cmd->args[1]);
+			return (255);
+		}
+	}
 	if (!cmd->next && !cmd->prev)
 		sh->should_exit = TRUE;
-	return (0);
+	return (exit_status);
 }

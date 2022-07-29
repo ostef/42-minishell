@@ -20,6 +20,7 @@ Errors
 -n // -Nn …
 
 Exit code erreur 0 au lieu de 1
+exit 2 | exit qbc Z >> echo $? = 255
 
 Si minishell dans minishell code d’erreur pas bon // ignorer le signo du parent
 
