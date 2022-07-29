@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:10:35 by soumanso          #+#    #+#             */
-/*   Updated: 2022/04/21 13:55:16 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 16:03:20 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ t_bool	cmd_line_parse(t_shell *sh, t_cstr str, t_cmd_line *line)
 	t_cmd	*cmd;
 
 	ft_lexer_init (&lexer, str, ft_temp());
+	ft_lexer_skip_spaces (&lexer);
 	line->count = 0;
 	while (lexer.curr < lexer.end)
 	{
