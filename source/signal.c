@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aandric <aandric@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 18:52:05 by aandric           #+#    #+#             */
-/*   Updated: 2022/04/13 18:45:51 by aandric          ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:11:57 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,6 @@ void	pre_exec_sigint_handler(int signo)
 		ft_print ("\n");
 	}
 }
-
-// void	exec_signal_handler(int signo)
-// {
-// 	g_globals.handled_signal = signo;
-// 	g_globals.exit_status = EXIT_SIGNAL + signo;
-// 	if (signo == SIGINT)
-// 		ft_print ("\n");
-// 	if (signo == SIGQUIT)
-// 		ft_println ("Quit: %i", signo);
-// }
 
 void	exec_signal_handler(int signo)
 {

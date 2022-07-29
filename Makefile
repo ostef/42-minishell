@@ -5,8 +5,11 @@ SRC_FILES = main.c shell.c error.c signal.c\
 	parse/parse.c parse/args.c parse/redirs_parse.c parse/post_process.c\
 	exec/exec_line.c exec/exec_cmd.c exec/find.c exec/builtin.c exec/redirs.c\
 	builtins/dir.c builtins/shell.c builtins/export_builtin.c
-RL_LIB = -L$(shell brew --prefix readline)/lib
-RL_INC = -I$(shell brew --prefix readline)/include
+#RL_LIB = -L$(shell brew --prefix readline)/lib
+#RL_INC = -I$(shell brew --prefix readline)/include
+RL_LIB = -L/usr/lib/x86_64-linux-gnu/
+RL_INC = -I/usr/include/readline
+TESTS = abort bus_error fp_except segfault
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_DIRS = libft .
@@ -15,6 +18,7 @@ LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
 C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror #-fsanitize=address -g
+TESTS_C_FLAGS = -Wall -Wextra -Werror
 
 all: | libft $(NAME)
 
@@ -24,6 +28,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
 
 $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 	$(CC) $(C_FLAGS) $(RL_INC) $(RL_LIB) -lreadline $(addprefix $(OBJ_DIR)/, $(OBJ_FILES)) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(RL_INC) -o $(NAME)
+
+tests/%: tests/%.c Makefile
+	$(CC) $(TESTS_C_FLAGS) $< -o $@
+
+tests: $(addprefix tests/,$(TESTS))
 
 libft:
 	@make -C libft
@@ -39,4 +48,4 @@ fclean_libs:
 
 re: fclean all
 
-.PHONY: all libft clean fclean
+.PHONY: all libft clean fclean tests

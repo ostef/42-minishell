@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:49:32 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:29:15 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,27 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 	return (!cmd || !cmd->has_errors);
 }
 
+static t_int	handle_signal_exit(t_int status)
+{
+	if (!WIFSIGNALED (status))
+		return (0);
+	g_globals.handled_signal = WTERMSIG(status);
+	g_globals.exit_status = EXIT_SIGNAL + g_globals.handled_signal;
+	if (WTERMSIG(status) == SIGINT)
+		ft_print ("\n");
+	else if (WTERMSIG(status) == SIGQUIT)
+		ft_println ("Quit: 3");
+	else if (WTERMSIG (status) == SIGSEGV)
+		ft_println ("Segmentation fault");
+	else if (WTERMSIG (status) == SIGBUS)
+		ft_println ("Bus error");
+	else if (WTERMSIG (status) == SIGABRT)
+		ft_println ("Aborted");
+	else if (WTERMSIG (status) == SIGFPE)
+		ft_println ("Floating point exception");
+	return (g_globals.exit_status);
+}
+
 static t_int	wait_for_cmds(t_cmd_line *line)
 {
 	t_int	status;
@@ -63,16 +84,13 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 		else if (cmd->args_count > 0)
 		{
 			waitpid (cmd->pid, &status, 0);
-			if (WTERMSIG(status) == SIGINT)
-				ft_print ("\n");
-			else if (WTERMSIG(status) == SIGQUIT)
-				ft_println ("Quit: 3");
-			status = WEXITSTATUS (status);
+			if (WIFSIGNALED (status))
+				status = handle_signal_exit (status);
+			else
+				status = WEXITSTATUS (status);
 		}
 		cmd = cmd->next;
 	}
-	if (g_globals.handled_signal == SIGINT)
-		return (g_globals.exit_status);
 	return (status);
 }
 

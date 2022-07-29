@@ -3,3 +3,7 @@
 *.a
 .vscode/
 minishell
+tests/abort
+tests/bus_error
+tests/fp_except
+tests/segfault
