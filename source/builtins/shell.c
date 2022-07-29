@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 16:00:03 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:09:28 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	if (cmd->args_count > 2)
 	{
 		eprint ("exit: too many arguments");
-		return (1);	// @Todo: check if this one is correct
+		return (1);
 	}
 	if (cmd->args_count > 1)
 	{
