@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 18:52:05 by aandric           #+#    #+#             */
-/*   Updated: 2022/07/29 20:11:57 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:55:18 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ void	default_signal_handler(int signo)
 		ft_print ("\n");
 		rl_on_new_line();
 		rl_replace_line ("", 0);
-		rl_redisplay ();
-	}
-	else if (signo == SIGQUIT)
-	{
-		rl_on_new_line();
 		rl_redisplay ();
 	}
 }

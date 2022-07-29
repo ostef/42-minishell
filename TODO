@@ -1,43 +1,7 @@
-* Norminette
-
-Error codes:
-* Failed to open redir file: 1
-* Syntax error: 258
-* Command is not executable: 126
-* Command not found: 127
-* Fatal error of signal N: 128 + N
-	- Program segfaulted: 139
-* Script terminated by ^C: 130
-* ^C: 1
-
-Maybe:
-* Handle segfault signals
-* Shell arguments
-* Log file so we can have the previous history
-* $'PATH' in heredoc not behaving the same as in normal command line... (fuck that...)
-
 Errors
-OK 
--n // -Nn … 
-
-A verifier mac ecole
-Exit code erreur 0 au lieu de 1
-exit 2 | exit qbc Z >> echo $? = 255
-
-NOK
-Si minishell dans minishell code d’erreur pas bon // ignorer le signo du parent
-Renvoyer code d’erreur signaux 
-Attention quand minishell imbriques ctl -\ erreur avec readline probablement affiche prompt sans retour a la ligne plusieurs fois 
+Code de retour du builtin exit a verifier
 
 OK
 Unset path << >> gere comme dans bash. si lance avec env -i alors path non visible mais existant. Si commande unset path alors le path est bien supprime et commandes ne fonctionnent plus 
 
-OK
-Leaks fd à traiter -> bien close quand signaux avant d’exit vérifier avec ls/dev/fd
-(Verif avec ctl c notamment)
-
-OK
-Historique ne pas ajouter lignes vide avec strlen 0
-
-OSEF
-$ variables extend pas dans le bon ordre dans le parsing ré parcourir parsing 
+* Norminette
