@@ -5,10 +5,10 @@ SRC_FILES = main.c shell.c error.c signal.c\
 	parse/parse.c parse/args.c parse/redirs_parse.c parse/post_process.c\
 	exec/exec_line.c exec/exec_cmd.c exec/find.c exec/builtin.c exec/redirs.c\
 	builtins/dir.c builtins/shell.c builtins/export_builtin.c
-#RL_LIB = -L$(shell brew --prefix readline)/lib
-#RL_INC = -I$(shell brew --prefix readline)/include
-RL_LIB = -L/usr/lib/x86_64-linux-gnu/
-RL_INC = -I/usr/include/readline
+RL_LIB = -L$(shell brew --prefix readline)/lib
+RL_INC = -I$(shell brew --prefix readline)/include
+#RL_LIB = -L/usr/lib/x86_64-linux-gnu/
+#RL_INC = -I/usr/include/readline
 TESTS = abort bus_error fp_except segfault
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
