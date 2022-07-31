@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 20:29:15 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/31 13:41:08 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,13 @@ static t_int	wait_for_cmds(t_cmd_line *line)
 		else if (cmd->args_count > 0)
 		{
 			waitpid (cmd->pid, &status, 0);
-			if (WIFSIGNALED (status))
-				status = handle_signal_exit (status);
-			else
-				status = WEXITSTATUS (status);
+			if (!cmd->next)
+			{
+				if (WIFSIGNALED (status))
+					status = handle_signal_exit (status);
+				else
+					status = WEXITSTATUS (status);
+			}
 		}
 		cmd = cmd->next;
 	}
