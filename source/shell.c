@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 21:00:39 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 21:37:24 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/31 13:15:51 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	shell_loop(t_shell *sh)
 	input = readline (get_prompt(sh));
 	if (!input)
 	{
+		g_globals.exit_status = 1;
 		ft_println ("exit");
 		sh->should_exit = TRUE;
 		return ;
