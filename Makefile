@@ -51,6 +51,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(addprefix tests/,$(TESTS))
 
 fclean_libs:
 	@ $(MAKE) -C libft fclean
