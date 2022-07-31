@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/31 12:22:50 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/31 12:25:10 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,12 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	exit_status = 0;
 	if (cmd->args_count > 2)
 	{
+		ft_fprintln (STDERR, "exit");
 		eprint ("exit: too many arguments");
 		return (1);
 	}
+	if (!cmd->next && !cmd->prev)
+		ft_fprintln (STDERR, "exit");
 	if (cmd->args_count > 1)
 	{
 		if (!parse_exit_status (cmd->args[1], &exit_status))
