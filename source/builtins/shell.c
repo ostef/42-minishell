@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:33:04 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 20:09:28 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/07/31 12:22:50 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_int	builtin_exit(t_shell *sh, t_cmd *cmd)
 		if (!parse_exit_status (cmd->args[1], &exit_status))
 		{
 			eprint ("exit: %s: numeric argument required", cmd->args[1]);
-			return (255);
+			exit_status = 255;
 		}
 	}
 	if (!cmd->next && !cmd->prev)
