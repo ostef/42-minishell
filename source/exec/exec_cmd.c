@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:09:51 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 21:20:29 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/08/03 23:33:22 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void	cmd_dup_files(t_cmd *cmd)
 		dup2 (cmd->prev->pipe[PIPE_READ], STDIN);
 }
 
-void	cmd_close_files_up_to(t_cmd *cmd)
+void	cmd_close_files_up_to(t_cmd_line *line, t_cmd *up_to)
 {
+	t_cmd	*cmd;
+
+	cmd = line->first;
 	while (cmd)
 	{
 		if (cmd->pipe[PIPE_READ] > STDERR)
@@ -36,7 +39,9 @@ void	cmd_close_files_up_to(t_cmd *cmd)
 			close (cmd->fd_in);
 		if (cmd->fd_out > STDERR)
 			close (cmd->fd_out);
-		cmd = cmd->prev;
+		if (cmd == up_to)
+			break ;
+		cmd = cmd->next;
 	}
 }
 
@@ -84,7 +89,7 @@ static void	cmd_handle_error(t_cmd *cmd, t_err err)
 	}
 }
 
-void	cmd_exec(t_shell *sh, t_cmd *cmd)
+void	cmd_exec(t_shell *sh, t_cmd_line *line, t_cmd *cmd)
 {
 	t_cstr	full_path;
 	t_err	err;
@@ -97,7 +102,7 @@ void	cmd_exec(t_shell *sh, t_cmd *cmd)
 		if (cmd->pid == 0)
 		{
 			cmd_dup_files(cmd);
-			cmd_close_files_up_to (cmd);
+			cmd_close_files_up_to (line, line->last);
 			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			cmd_handle_error (cmd, err);
 			execve (full_path, cmd->args, env_list_to_array (sh));

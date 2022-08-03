@@ -6,16 +6,16 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:38:06 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/31 13:41:08 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/08/03 23:32:28 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	set_error(t_cmd *cmd)
+static void	set_error(t_cmd_line *line, t_cmd *cmd)
 {
 	cmd->has_errors = TRUE;
-	cmd_close_files_up_to (cmd);
+	cmd_close_files_up_to (line, cmd);
 }
 
 static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
@@ -32,12 +32,12 @@ static t_bool	pre_exec(t_shell *sh, t_cmd_line *line)
 		if (pipe (cmd->pipe) == -1)
 		{
 			eprint ("%m");
-			set_error (cmd);
+			set_error (line, cmd);
 			break ;
 		}
 		if (!redir_open(sh, cmd))
 		{
-			set_error (cmd);
+			set_error (line, cmd);
 			break ;
 		}
 		cmd = cmd->next;
@@ -111,9 +111,9 @@ t_int	cmd_line_exec(t_shell *sh, t_cmd_line *line)
 	while (cmd)
 	{
 		if (cmd->args_count > 0 && !cmd->has_errors)
-			cmd_exec (sh, cmd);
+			cmd_exec (sh, line, cmd);
 		cmd = cmd->next;
 	}
-	cmd_close_files_up_to (line->last);
+	cmd_close_files_up_to (line, line->last);
 	return (wait_for_cmds (line));
 }

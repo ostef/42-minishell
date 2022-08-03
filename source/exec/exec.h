@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:31:09 by soumanso          #+#    #+#             */
-/*   Updated: 2022/07/29 21:26:20 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/08/03 23:34:42 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,12 @@ t_bool	cmd_is_builtin(t_cmd *cmd);
  * ERR_CMD_PERM is returned if `cmd_name` is a path, or ERR_CMD_NOT_FOUND if
  * the command name is not a path.
  */
-void	cmd_close_files_up_to(t_cmd *cmd);
 t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
+/*
+ * Closes all the files opened for each cmd in the line, up to and including
+ * a given cmd
+ */
+void	cmd_close_files_up_to(t_cmd_line *line, t_cmd *up_to);
 /*
  * Executes the command `cmd`. If the command cannot be executed (cmd_find_path
  * failed), an error message is printed. This function is responsible for
@@ -37,7 +41,7 @@ t_err	cmd_find_path(t_shell *sh, t_cstr cmd_name, t_cstr *out_filename);
  * For builtins, a function is called directly in the shell process, without
  * forking.
  */
-void	cmd_exec(t_shell *sh, t_cmd *cmd);
+void	cmd_exec(t_shell *sh, t_cmd_line *line, t_cmd *cmd);
 t_int	cmd_exec_builtin(t_shell *sh, t_cmd *cmd);
 t_bool	redir_open(t_shell *sh, t_cmd *cmd);
 void	cmd_dup_files(t_cmd *cmd);
