@@ -18,7 +18,7 @@ RL_INC = -I/usr/include/readline
 
 endif
 
-TESTS = abort bus_error fp_except segfault
+TESTS = abort bus_error fp_except segfault arg_max
 OBJ_DIR = obj
 OBJ_FILES = $(SRC_FILES:.c=.o)
 INCLUDE_DIRS = libft .
@@ -27,7 +27,6 @@ LIB_DIRS = libft
 LIBS = ft readline
 CC = gcc
 C_FLAGS = $(addprefix -I, $(INCLUDE_DIRS)) -Wall -Wextra -Werror #-fsanitize=address -g
-TESTS_C_FLAGS = -Wall -Wextra -Werror
 
 all: libft $(NAME)
 
@@ -38,8 +37,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
 $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ_FILES))
 	$(CC) $(C_FLAGS) $(RL_INC) $(RL_LIB) -lreadline $(addprefix $(OBJ_DIR)/, $(OBJ_FILES)) $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS)) $(RL_INC) -o $(NAME)
 
-tests/%: tests/%.c Makefile
-	$(CC) $(TESTS_C_FLAGS) $< -o $@
+tests/%: tests/%.c $(DEPENDENCIES)
+	$(CC) $(C_FLAGS) $< libft/libft.a -o $@
 
 tests: $(addprefix tests/,$(TESTS))
 

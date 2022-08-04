@@ -7,3 +7,4 @@ tests/abort
 tests/bus_error
 tests/fp_except
 tests/segfault
+tests/arg_max
