@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/04 20:09:51 by soumanso          #+#    #+#             */
-/*   Updated: 2022/08/03 23:33:22 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/08/04 16:42:42 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	cmd_exec(t_shell *sh, t_cmd_line *line, t_cmd *cmd)
 			err = cmd_find_path (sh, cmd->args[0], &full_path);
 			cmd_handle_error (cmd, err);
 			execve (full_path, cmd->args, env_list_to_array (sh));
+			eprint ("execve failed");
 			exit (EXIT_FAILURE);
 		}
 	}
