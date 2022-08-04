@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/24 18:08:19 by aandric           #+#    #+#             */
-/*   Updated: 2022/07/29 21:36:20 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/08/04 16:09:21 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_int	main(t_int ac, t_str *av, t_str *envp)
 	(void)ac;
 	(void)av;
 	ft_memset (&sh, 0, sizeof (t_shell));
-	ft_init_arena (&sh.arena_memory, TEMP_STORAGE_SIZE);
+	ft_init_arena (&sh.arena_memory, MEMORY_ARENA_PAGE_SIZE, ft_heap ());
 	sh.arena = ft_arena (&sh.arena_memory);
 	tcgetattr(0, &sh.old_termios);
 	sh.new_termios = sh.old_termios;
