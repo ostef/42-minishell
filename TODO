@@ -1,4 +1,0 @@
-OK
-Unset path << >> gere comme dans bash. si lance avec env -i alors path non visible mais existant. Si commande unset path alors le path est bien supprime et commandes ne fonctionnent plus 
-
-* Norminette
